@@ -217,7 +217,7 @@ import {
 } from "../../../icons"
 
 import { useSidebar } from '@/composables/useSidebar'
-import SidebarWidget from "./SidebarWidget.vue";
+// import SidebarWidget from "./SidebarWidget.vue";
 
 const route = useRoute()
 
