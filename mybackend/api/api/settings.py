@@ -26,11 +26,10 @@ SECRET_KEY = 'django-insecure-!k3sh7%367#q*9_1%)kxapr%qk&e58hk+=jdwv(f#0+)#udz8_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.1.204', 'madaozi.mg']
+ALLOWED_HOSTS = ['192.168.1.204']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -153,6 +152,7 @@ MESSAGEBIRD_ORIGINATOR = 'MadaOzi'
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR/ 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
