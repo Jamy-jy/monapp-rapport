@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import API_CONFIG from '@/config/api'
 
 interface User {
   id: number
@@ -33,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
     },
     
     async login(email: string, password: string) {
-      const res = await axios.post('http://localhost:8000/api/login/', { email, password })
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/login/`, { email, password })
       
       this.token = res.data.token
       this.user = res.data.user
