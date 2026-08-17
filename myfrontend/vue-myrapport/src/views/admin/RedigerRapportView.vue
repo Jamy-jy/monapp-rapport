@@ -31,6 +31,7 @@ import SendBtn from '@/components/buttons/SendBtn.vue';
 import { useRoute } from 'vue-router';
 import { useAlertNotifStore } from '@/stores/AlertNotif';
 import axios from 'axios';
+import API_CONFIG from '@/config/api';
 
 const currentPageTitle = ref('Rapport')
 const message = ref('')           // contenu textarea
@@ -79,7 +80,7 @@ const sendEmail = async () => {
         formData.append('files', file)
       }
     }
-    const res = await axios.post('http://localhost:8000/api/send-email/',formData,
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/send-email/`,formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data'

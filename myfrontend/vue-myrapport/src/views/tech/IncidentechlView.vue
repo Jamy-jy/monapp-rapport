@@ -165,7 +165,7 @@
 
                 <!--Bouton afficher readonly -->
                 <a
-                    :href="`http://localhost:8000${selectedIncident.fichier_solution}`"
+                    :href="`${API_CONFIG.LOCAL.BASE_URL}${selectedIncident.fichier_solution}`"
                     target="_blank"
                     class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/20 transition"
                 >
@@ -202,6 +202,7 @@
     import TextareaInput from '@/components/FormElement/TextareaInput.vue';
     import PlaceholderInput from '@/components/FormElement/PlaceholderInput.vue';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
 
     const currentPageTitle = ref('Incidents')
@@ -274,7 +275,7 @@
 
         try {
             // Un seul endpoint — tout va dans IncidentSurvenu
-            await axios.post('http://localhost:8000/api/incidents-survenus/create/', {
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents-survenus/create/`, {
             nom_incident: newIncident.titre,
             type: newIncident.type,
             solutionPrise: newIncident.solution || null,
@@ -301,7 +302,7 @@
 
     const fetchIncidents = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/incidents/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents/`)
             incidents.value = res.data
         } catch (err) {
             console.error('Erreur chargement incidents:', err)

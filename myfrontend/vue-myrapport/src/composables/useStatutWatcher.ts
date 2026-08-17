@@ -2,6 +2,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import axios from 'axios'
+import API_CONFIG from '@/config/api'
 
 export function useStatutWatcher() {
   const authStore = useAuthStore()
@@ -12,7 +13,7 @@ export function useStatutWatcher() {
     if (!authStore.isAuthenticated) return
 
     try {
-      await axios.get('http://localhost:8000/api/check-statut/', {
+      await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/check-statut/`, {
         headers: { Authorization: `Bearer ${authStore.token}` }
       })
     } catch (err: any) {

@@ -156,7 +156,7 @@
 
                     <!--Bouton afficher readonly -->
                     <a
-                      :href="`http://localhost:8000${selectedSysteme.fichier_solution}`"
+                      :href="`${API_CONFIG.LOCAL.BASE_URL}${selectedSysteme.fichier_solution}`"
                       target="_blank"
                       class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/20 transition"
                     >
@@ -238,6 +238,7 @@ import BaseTable from '@/components/table/BaseTable.vue';
 import SystemeActions from '@/components/table/SystemeActions.vue';
 import { useRouter } from 'vue-router'
 import ListIcon from '@/icons/ListIcon.vue';
+import API_CONFIG from '@/config/api';
 
 const router = useRouter()
 
@@ -325,7 +326,7 @@ const submitForm = async (avecSolution: boolean) => {
       }
     }
 
-    await axios.post('http://localhost:8000/api/systemes/create/', formData, {
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/systemes/create/`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
       // titre_systeme: system.titre_systeme,
       // solution: avecSolution ? system.solution : '',
@@ -367,7 +368,7 @@ const updateSysteme = async () => {
   if (!selectedSysteme.value) return
   try {
     await axios.patch(
-      `http://localhost:8000/api/systemes/${selectedSysteme.value.id}/update/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/api/systemes/${selectedSysteme.value.id}/update/`,
       {
         titre_systeme: editData.titre_systeme,
         solution: editData.solution,
@@ -393,7 +394,7 @@ const deleteSysteme = async () => {
   if (!selectedSysteme.value) return
   try {
     await axios.delete(
-      `http://localhost:8000/api/systemes/${selectedSysteme.value.id}/delete/`
+      `${API_CONFIG.LOCAL.BASE_URL}/api/systemes/${selectedSysteme.value.id}/delete/`
     )
     showDetailModal.value = false
     alert.showAlertNotif(
@@ -413,7 +414,7 @@ const deleteSysteme = async () => {
 // Charger la liste
 const fetchSystemes = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/systemes/system-list/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/systemes/system-list/`)
     systemes.value = res.data
   } catch (err) {
     console.error('Erreur chargement:', err)

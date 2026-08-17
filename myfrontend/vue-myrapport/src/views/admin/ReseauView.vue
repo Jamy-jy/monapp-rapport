@@ -156,7 +156,7 @@
 
                     <!--Bouton afficher readonly -->
                     <a
-                      :href="`http://localhost:8000${selectedReseau.fichier_solution}`"
+                      :href="`${API_CONFIG.LOCAL.BASE_URL}${selectedReseau.fichier_solution}`"
                       target="_blank"
                       class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/20 transition"
                     >
@@ -239,6 +239,7 @@
     import TextareaInput from '@/components/FormElement/TextareaInput.vue';
     import router from '@/router';
     import ListIcon from '@/icons/ListIcon.vue';
+import API_CONFIG from '@/config/api';
 
     const currentPageTitle = ref('Incident Reseau')
 
@@ -324,7 +325,7 @@
                 }
             }
 
-            await axios.post('http://localhost:8000/api/reseaux/create/', formData, {
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/create/`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
 
@@ -364,7 +365,7 @@
         if (!selectedReseau.value) return
         try {
             await axios.patch(
-            `http://localhost:8000/api/reseaux/${selectedReseau.value.id}/update/`,
+            `${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/${selectedReseau.value.id}/update/`,
             {
                 nom_incident_reseau: editData.nom_incident_reseau,
                 solution_incident_reseau: editData.solution,
@@ -390,7 +391,7 @@
         if (!selectedReseau.value) return
         try {
             await axios.delete(
-            `http://localhost:8000/api/reseaux/${selectedReseau.value.id}/delete/`
+            `${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/${selectedReseau.value.id}/delete/`
             )
             showDetailModal.value = false
             alert.showAlertNotif(
@@ -410,7 +411,7 @@
     // Charger la liste
     const fetchReseaux = async () => {
     try {
-        const res = await axios.get('http://localhost:8000/api/reseaux/reseau-list/')
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/reseau-list/`)
         reseaux.value = res.data
     } catch (err) {
         console.error('Erreur chargement:', err)

@@ -50,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
 
     async logout() {
       try {
-        await axios.post('http://localhost:8000/api/logout/', {}, {
+        await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/logout/`, {}, {
           headers: { Authorization: `Bearer ${this.token}` }
         })
       } catch (e) {

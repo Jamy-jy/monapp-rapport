@@ -97,6 +97,7 @@ import PasswordInput from '@/components/FormElement/PasswordInput.vue';
 import EmailInput from '@/components/FormElement/EmailInput.vue';
 import SaveBtn from '@/components/buttons/SaveBtn.vue';
 import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
 const currentPageTitle = ref('Ajout utilisateur')
 
@@ -162,7 +163,7 @@ const submitForm = async () => {
   Object.keys(serverErrors).forEach(k => delete serverErrors[k])
 
   try {
-    const res = await axios.post('http://localhost:8000/api/users/', payload )
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/users/`, payload )
     console.log('Utilisateur ajouté', res.data)
 
     //reset formulaire

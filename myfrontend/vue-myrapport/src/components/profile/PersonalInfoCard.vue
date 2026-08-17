@@ -225,6 +225,7 @@ import axios from 'axios'
 import Modal from './Modal.vue'
 import UpdateBtn from '../buttons/UpdateBtn.vue'
 import { useAuthStore } from '@/stores/auth'
+import API_CONFIG from '@/config/api'
 
 
 const isProfileInfoModal = ref(false)
@@ -290,7 +291,7 @@ const saveProfile = async () => {
 
   try {
     const res = await axios.patch(
-      `http://localhost:8000/api/users/${authStore.user?.id}/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/api/users/${authStore.user?.id}/`,
       payload
     )
 

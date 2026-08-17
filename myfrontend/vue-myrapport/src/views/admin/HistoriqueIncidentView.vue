@@ -55,6 +55,7 @@
     import axios from 'axios';
     import BaseTable from '@/components/table/BaseTable.vue';
     import searchIcon from '@/icons/searchIcon.vue';
+    import API_CONFIG from '@/config/api';
 
     const currentPageTitle = ref('Historique Incident')
 
@@ -92,7 +93,7 @@
 
     const loadTechs = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/tech/')
+            const response = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/tech/`)
 
             techOptions.value = response.data
         } catch (error) {
@@ -122,7 +123,7 @@
 
     const fetchIncidents = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/incidents-survenus/list/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents-survenus/list/`)
             incidents.value = res.data
         } catch (err) {
             console.error('Erreur chargement incidents:', err)
@@ -138,7 +139,7 @@
             if (debut) params.dateDebut = debut
             if (fin) params.dateFin = fin
     
-            const res = await axios.get('http://localhost:8000/api/incidents-survenus/serchTechlist/', {
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents-survenus/serchTechlist/`, {
                 params
             })
             incidents.value = res.data

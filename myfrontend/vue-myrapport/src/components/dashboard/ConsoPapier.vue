@@ -103,6 +103,7 @@ import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import type { ApexOptions } from 'apexcharts'
 import axios from 'axios'
+import API_CONFIG from '@/config/api'
 
 const pourcentage = ref(0)     
 const pourcentageTotal = ref(0) 
@@ -169,7 +170,7 @@ const chartOptions = computed<ApexOptions>(() => ({
 
 const fetchRam = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/stock/ram/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/ram/`)
     pourcentage.value = res.data.pourcentage
     pourcentageTotal.value = res.data.pourcentage_total  // texte réel
     qteRestant.value = res.data.qte_restant

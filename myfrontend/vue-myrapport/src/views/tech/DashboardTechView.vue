@@ -53,6 +53,7 @@
     import LastRecapVol from '@/components/dashboard/LastRecapVol.vue';
     import axios from 'axios'
     import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
     const encreProducts = ref<any[]>([])
     const encreBoxops = ref<any[]>([])
@@ -82,7 +83,7 @@
 
     const fetchEncre = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/encre/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/`)
 
             // Construire la structure attendue par le composant
             encreBoxops.value = res.data.boxops
@@ -107,7 +108,7 @@
 
     const fetchConsoRam = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
             params: { nom: 'ram papier' }
             })
             nbr_entree_ram.value = res.data.qte_entree
@@ -124,7 +125,7 @@
 
     const fetchConsoBobine = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
             params: { nom: 'etiquette' }  // insensible à la casse côté backend
             })
             qte_entree_bob.value = res.data.qte_entree
@@ -137,7 +138,7 @@
 
     const fetchConsoRuban = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
             params: { nom: 'ruban' }
             })
             qte_entree_r.value = res.data.qte_entree

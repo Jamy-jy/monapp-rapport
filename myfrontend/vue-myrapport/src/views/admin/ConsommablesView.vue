@@ -143,7 +143,8 @@
   import BaseTable from '@/components/table/BaseTable.vue'
   import ItemActions from '@/components/table/ItemActions.vue'
   import axios from 'axios'
-import { useAlertNotifStore } from '@/stores/AlertNotif'
+  import { useAlertNotifStore } from '@/stores/AlertNotif'
+  import API_CONFIG from '@/config/api'
 
   const currentPageTitle = ref('Nouveau Consommable')
 
@@ -171,7 +172,7 @@ import { useAlertNotifStore } from '@/stores/AlertNotif'
 
   const submitForm = async () => {
     try {
-      const res = await axios.post('http://localhost:8000/api/consommables/', consommable)
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`, consommable)
       consommable.nom_consommable = ''
       consommable.type_consommable = ''
       consommable.mode_consommation = ''
@@ -211,7 +212,7 @@ import { useAlertNotifStore } from '@/stores/AlertNotif'
   
   const fetchConso = async () => {
     try {
-      const resconso = await axios.get('http://localhost:8000/api/consommables/')
+      const resconso = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`)
       conso.value = resconso.data.map((c: any) => ({
         id: c.id,
         nom_consommable: c.nom_consommable,
@@ -255,7 +256,7 @@ import { useAlertNotifStore } from '@/stores/AlertNotif'
     Object.keys(editErrors).forEach(k => delete editErrors[k])
 
     try {
-      await axios.patch(`http://localhost:8000/api/consommables/${selectedConsoId.value}/`, editData)
+      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/${selectedConsoId.value}/`, editData)
       showEditModal.value = false
       await fetchConso()
       alert.showAlertNotif(
@@ -288,7 +289,7 @@ import { useAlertNotifStore } from '@/stores/AlertNotif'
 
     try {
       await axios.delete(
-        `http://localhost:8000/api/consommables/${selectedConso.value.id}/`
+        `${API_CONFIG.LOCAL.BASE_URL}/api/consommables/${selectedConso.value.id}/`
       )
       showDeleteModal.value = false
       await fetchConso()

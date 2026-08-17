@@ -45,6 +45,7 @@ import { useAlertNotifStore } from '@/stores/AlertNotif';
 import CanceleBtn from '@/components/buttons/CanceleBtn.vue';
 import UpdateBtn from '@/components/buttons/UpdateBtn.vue';
 import DeleteBtn from '@/components/buttons/DeleteBtn.vue';
+import API_CONFIG from '@/config/api';
 
 
 const currentPageTitle = ref('Modèle')
@@ -100,7 +101,7 @@ const modeles = ref<Option[]>([])
 //affichage consommable dans select
 const fetchModeles = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/text-model/list/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/text-model/list/`)
     //Transformer en format Option { label, value }
     modeles.value = res.data.map((m: any) => ({
       label: m.text,

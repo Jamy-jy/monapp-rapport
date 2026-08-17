@@ -172,6 +172,7 @@
     import axios from 'axios';
     import ListAction from '@/components/table/listAction.vue';
     import PlaceholderInput from '@/components/FormElement/PlaceholderInput.vue';
+import API_CONFIG from '@/config/api';
 
     const currentPageTitle = ref('Inventaire')
     const Group = ref<any[]>([])
@@ -200,7 +201,7 @@
 
     const fetchGroup = async () => {
       try {
-        const resg = await axios.get('http://localhost:8000/api/inventaire/')
+        const resg = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/`)
         Group.value = resg.data.map((g: any) => ({
           id: g.id,
           nom_group: g.nom_group,
@@ -295,7 +296,7 @@
         }
 
         const response = await axios.post(
-          'http://localhost:8000/api/composant-group/',
+          `${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`,
           payload
         )
 
@@ -372,7 +373,7 @@
       showModalListComposantGroup.value = true
 
       try {
-        const res = await axios.get('http://localhost:8000/api/composant-group/', {
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, {
           params: { group: row.id, pending: 'true' },
         })
         composantGroupList.value = res.data
@@ -450,7 +451,7 @@
             // composant_created_at n'est pas envoyé -> le backend applique default=timezone.now
           }
 
-          return axios.post('http://localhost:8000/api/composant-group/', payload)
+          return axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, payload)
         })
 
         const responses = await Promise.all(requests.filter(Boolean))

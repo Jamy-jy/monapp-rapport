@@ -37,6 +37,7 @@ import BaseEditTable from '@/components/table/BaseEditTable.vue';
 import SaveBtn from '@/components/buttons/SaveBtn.vue';
 import axios from 'axios'
 import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
 const currentPageTitle = ref('Etiquettes')
 
@@ -75,7 +76,7 @@ const vinette = ref<VignetteRow[]>([])
 
 const fetchBobines = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/bobines/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/bobines/`)
     
     
     vinette.value = res.data
@@ -187,7 +188,7 @@ const submitForm = async () => {
   try {
     const payload = formatPayload()
     console.log(JSON.stringify(formatPayload(), null, 2))
-    const res = await axios.post('http://localhost:8000/api/vignettes/',payload)
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/vignettes/`,payload)
 
     console.log('Données enregistrées', res.data)
      alert.showAlertNotif(

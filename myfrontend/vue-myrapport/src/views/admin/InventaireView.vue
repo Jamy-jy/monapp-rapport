@@ -282,6 +282,8 @@
     import router from '@/router';
     import ListIcon from '@/icons/ListIcon.vue';
     import SelectInput from '@/components/FormElement/SelectInput.vue';
+import API_CONFIG from '@/config/api';
+
 
 
     const currentPageTitle =ref('Inventaire')
@@ -302,7 +304,7 @@
 
     const fetchSite = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/site/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/site/`)
 
     siteOptions.value = res.data.map((s: any) => ({
       label: s.accronyme_site,  // ce que tu veux afficher
@@ -394,7 +396,7 @@ onMounted(() => {
       Object.keys(editErrorsGroup).forEach(k => delete editErrorsGroup[k])
 
       try {
-        await axios.patch(`http://localhost:8000/api/inventaire/${selectedGroupId.value}/`, editDataGroup)
+        await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/${selectedGroupId.value}/`, editDataGroup)
         showEditModalGroup.value = false
         await fetchGroup()
         alert.showAlertNotif(
@@ -418,7 +420,7 @@ onMounted(() => {
       if (!selectedGroup.value) return
 
       try {
-        await axios.delete(`http://localhost:8000/api/inventaire/${selectedGroup.value.id}/`)
+        await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/${selectedGroup.value.id}/`)
         showDeleteModalGroup.value = false
         await fetchGroup()
         alert.showAlertNotif(
@@ -442,7 +444,7 @@ onMounted(() => {
       }
       try {
 
-        const res = await axios.post('http://localhost:8000/api/inventaire/', 
+        const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/`, 
           playload,
           
         )
@@ -472,7 +474,7 @@ onMounted(() => {
 
     const fetchGroup = async () => {
       try {
-        const resg = await axios.get('http://localhost:8000/api/inventaire/')
+        const resg = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/`)
         Group.value = resg.data.map((g: any) => ({
           id: g.id,
           nom_group: g.nom_group,
@@ -488,7 +490,7 @@ onMounted(() => {
     const accessGroupe = async (row: any) => {
       try {
         await axios.patch(
-          `http://localhost:8000/api/inventaire/${row.id}/access-statut/`
+          `${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/${row.id}/access-statut/`
         )
         await fetchGroup()  // rafraîchir la liste
       } catch (err) {
@@ -572,7 +574,7 @@ onMounted(() => {
         }
 
         const response = await axios.post(
-          'http://localhost:8000/api/composant-group/',
+          `${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`,
           payload
         )
 
@@ -639,7 +641,7 @@ onMounted(() => {
       showModalListComposantGroup.value = true
 
       try {
-        const res = await axios.get('http://localhost:8000/api/composant-group/', {
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, {
           params: { group: row.id, pending: 'true' },
         })
         composantGroupList.value = res.data
@@ -678,7 +680,7 @@ onMounted(() => {
       savingTest.value = true
       try {
         const response = await axios.patch(
-          `http://localhost:8000/api/composant-group/${selectedComposant.value.id}/`,
+          `${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/${selectedComposant.value.id}/`,
           { test_fonctionnalite: testFonctionnaliteText.value }
         )
 

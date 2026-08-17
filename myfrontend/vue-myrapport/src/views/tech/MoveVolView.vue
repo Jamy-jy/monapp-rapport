@@ -94,7 +94,7 @@ import PlaceholderInput from '@/components/FormElement/PlaceholderInput.vue';
 import RefreshIcon from '@/icons/RefreshIcon.vue';
 import SaveBtn from '@/components/buttons/SaveBtn.vue';
 import { useAlertNotifStore } from '@/stores/AlertNotif';
-/* import API_CONFIG from '@/config/api'; */
+import API_CONFIG from '@/config/api'; 
 
 const currentPageTitle = ref('Mouvement du vol')
 
@@ -128,7 +128,7 @@ const fetchData = async () => {
   results.value = []
 
   try {
-    const res = await axios.post('http://localhost:8000/api/proxy/report-visa/', {
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/proxy/report-visa/`, {
         begin: dateDebut.value,  // 
         end: dateFin.value,      // 
     })
@@ -186,7 +186,7 @@ const saveData = async () => {
       }))
     }
 
-    const res = await axios.post('http://localhost:8000/api/mouvements-vol/', payload)
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/mouvements-vol/`, payload)
     console.log('Enregistré:', res.data)
     
 

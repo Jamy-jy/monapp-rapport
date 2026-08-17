@@ -617,6 +617,7 @@ import { checkIcon } from '@/icons'
 import WarningTriangleIcon from '@/icons/WarningTriangleIcon.vue'
 import WarningIcon from '@/icons/WarningIcon.vue'
 import ErrorCircleIcon from '@/icons/ErrorCircleIcon.vue'
+import API_CONFIG from '@/config/api'
 
 const currentPageTitle = ref('Messagerie')
 const store     = useMessagingStore()
@@ -761,7 +762,7 @@ async function loadTechs(): Promise<void> {
 
     try{
        const token = sessionStorage.getItem('token')
-        const { data } = await axios.get(`http://localhost:8000/api/tech`,
+        const { data } = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/tech`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

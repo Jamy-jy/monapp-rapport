@@ -133,6 +133,7 @@ import BaseTable from '@/components/table/BaseTable.vue';
 import axios from 'axios';
 import ItemActions from '@/components/table/ItemActions.vue';
 import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
 const currentPageTitle = ref('Ajout de Categorie')
 const alert = useAlertNotifStore()
@@ -146,7 +147,7 @@ const serverErrors = reactive<Record<string, string>>({})
 
 const submitForm = async () => {
   try {
-      const res = await axios.post('http://localhost:8000/api/sejour_visa/', visa )
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/sejour_visa/`, visa )
       visa.libelle = ''
       visa.typeVisa = ''
 
@@ -183,7 +184,7 @@ const columnsVisa = [
 
 const fetchVisa = async () => {
   try {
-    const resvisa = await axios.get('http://localhost:8000/api/sejour_visa/')
+    const resvisa = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/sejour_visa/`)
     e.value = resvisa.data.map((v: any) => ({
     id: v.id,
     libelle: v.libelle,
@@ -225,7 +226,7 @@ const fetchVisa = async () => {
     Object.keys(editErrors).forEach(k => delete editErrors[k])
 
     try {
-      await axios.patch(`http://localhost:8000/api/sejour_visa/${selectedVisaId.value}/`, editData)
+      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/sejour_visa/${selectedVisaId.value}/`, editData)
       showEditModal.value = false
       await fetchVisa()
       alert.showAlertNotif(
@@ -257,7 +258,7 @@ const fetchVisa = async () => {
     if (!selectedVisa.value) return
 
     try {
-      await axios.delete(`http://localhost:8000/api/sejour_visa/${selectedVisa.value.id}/`)
+      await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/sejour_visa/${selectedVisa.value.id}/`)
       showDeleteModal.value = false
       await fetchVisa()
       alert.showAlertNotif(

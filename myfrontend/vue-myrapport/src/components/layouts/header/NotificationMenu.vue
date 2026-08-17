@@ -131,6 +131,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import axios from 'axios'
+import API_CONFIG from '@/config/api'
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)
@@ -173,7 +174,7 @@ const hasUnread = computed(() => visibleNotifications.value.length > 0)
 
 const fetchNotifications = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/notifications/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/notifications/`)
     allNotifications.value = res.data
   } catch (err) {
     console.error('Erreur notifications:', err)

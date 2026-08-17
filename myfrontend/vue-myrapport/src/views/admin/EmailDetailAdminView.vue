@@ -72,7 +72,7 @@
       </p>
 
       <a
-        :href="`http://localhost:8000${rapport.fichier}`"
+        :href="`${API_CONFIG.LOCAL.BASE_URL}${rapport.fichier}`"
         target="_blank"
         download
         class="flex items-center gap-3 w-fit px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
@@ -126,6 +126,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import PageBreadcrumbAdmin from '@/components/common/PageBreadcrumbAdmin.vue';
+import API_CONFIG from '@/config/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -179,7 +180,7 @@ const formatDateTime = (dateStr: string): string => {
 const fetchRapport = async () => {
   try {
     const id = route.params.id
-    const res = await axios.get(`http://localhost:8000/api/rapports/${id}/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/${id}/`)
     rapport.value = res.data
     console.log('RAPPORT DATA:', res.data)           // ← voir toutes les données
     console.log('EST EXPEDITEUR:', res.data.est_expediteur) 

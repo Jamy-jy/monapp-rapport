@@ -109,6 +109,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import PageBreadcrumbAdmin from '@/components/common/PageBreadcrumbAdmin.vue'
 import ComponentCard from '@/components/common/ComponentCard.vue'
+import API_CONFIG from '@/config/api'
 
 const currentPageTitle = ref('Historique')
 const loading = ref(true)
@@ -133,7 +134,7 @@ const deleteOptions = [
 const fetchHistorique = async () => {
   try {
     loading.value = true
-    const res = await axios.get('http://localhost:8000/api/historique/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/historique/`)
     historique.value = res.data
   } catch (err) {
     console.error('Erreur historique:', err)
@@ -144,7 +145,7 @@ const fetchHistorique = async () => {
 
 const confirmDelete = async (intervalle: string) => {
   try {
-    await axios.delete('http://localhost:8000/api/historique/delete/', {
+    await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/historique/delete/`, {
       data: { intervalle }
     })
     showDeleteModal.value = false

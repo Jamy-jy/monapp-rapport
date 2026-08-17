@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useAlertNotifStore } from '@/stores/AlertNotif'
+import API_CONFIG from '@/config/api'
 
 export const useTransfertNotifStore = defineStore('transfertNotif', {
     state: () => ({
@@ -12,7 +13,7 @@ export const useTransfertNotifStore = defineStore('transfertNotif', {
     actions: {
         async fetchTransferts() {
             try {
-                const res = await axios.get('http://localhost:8000/api/transfert-stock/en-attente/')
+                const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/transfert-stock/en-attente/`)
                 this.transfertsEnAttente = res.data
 
                 const alert = useAlertNotifStore()

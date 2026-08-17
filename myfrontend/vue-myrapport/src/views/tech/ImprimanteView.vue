@@ -70,6 +70,7 @@ import PageBreadcrumbTech from '@/components/common/PageBreadcrumbTech.vue'
 import SaveBtn from '@/components/buttons/SaveBtn.vue'
 import { useAlertNotifStore } from '@/stores/AlertNotif'
 import ConsoImprimante from '@/components/dashboard/ConsoImprimante.vue'
+import API_CONFIG from '@/config/api'
 
 const currentPageTitle = ref('Imprimante')
 const alert = useAlertNotifStore()
@@ -83,7 +84,7 @@ const encreBoxops = ref<any[]>([])
 
 // fetch boxOp
 const fetchBoxOps = async () => {
-  const res = await axios.get('http://localhost:8000/api/boxop/')
+  const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`)
   boxOps.value = res.data
 
   // init copies
@@ -98,7 +99,7 @@ const submitForm = async () => {
   }))
 
   try {
-    await axios.post('http://localhost:8000/api/imprimante/', payload)
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/imprimante/`, payload)
      alert.showAlertNotif(
             "Enregistrement effectué avec succès",
             "success"
@@ -114,7 +115,7 @@ const submitForm = async () => {
 
 const fetchEncre = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/encre/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/`)
 
             // boxop
             encreBoxops.value = res.data.boxops
@@ -144,7 +145,7 @@ const saveAll = async () => {
     for (const product of encreProducts.value) {
 
       //Sauvegarder la réserve
-      await axios.post('http://localhost:8000/api/encre/reserve/', {
+      await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/reserve/`, {
         couleur_id: product.couleur_id,
         reserve: Number(product.nbr_bouteil),
       })
@@ -160,7 +161,7 @@ const saveAll = async () => {
           niveau: niveauInt,
         })
 
-        await axios.post('http://localhost:8000/api/encre/update/', {
+        await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/update/`, {
           couleur_id: product.couleur_id,
           boxop_id: Number(boxId),
           niveau: niveauInt,  

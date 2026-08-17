@@ -49,7 +49,7 @@
     import SelectInput from '@/components/FormElement/SelectInput.vue';
     import axios from 'axios';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
-
+    import API_CONFIG from '@/config/api';
 
     const currentPageTitle = ref('Mouvement de stock');
 
@@ -63,7 +63,7 @@
 
     const fetchConsommable = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/consommables/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`)
 
             stockBureauOptions.value = res.data.map((c: any) => ({
             label: c.nom_consommable,  // ce que tu veux afficher
@@ -121,7 +121,7 @@
         stockBureau.site = ''
 
         try {
-            const res = await axios.get('http://localhost:8000/api/stock-bureau/', {
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock-bureau/`, {
             params: { consommable_id: newId }
             })
             stockBureau.qte_restant_bureau = res.data.qte_restant_bureau
@@ -168,7 +168,7 @@
         }
 
         try {
-            const res = await axios.post('http://localhost:8000/api/stock-bureau/', {
+            const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/stock-bureau/`, {
             consommable_id: formData.consommable,
             qte_entree_bureau: stockBureau.qte_entree_bureau,
             qte_envoye:        stockBureau.qte_envoye,
@@ -207,7 +207,7 @@
 
     const fetchAlertesStock = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/stock-bureau/alertes/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock-bureau/alertes/`)
 
             res.data.forEach((item: any) => {
                 alert.showAlertNotif(

@@ -171,7 +171,7 @@
 
                     <!--Bouton afficher readonly -->
                     <a
-                      :href="`http://localhost:8000${selectedMateriel.fichier_solution}`"
+                      :href="`${API_CONFIG.LOCAL.BASE_URL}${selectedMateriel.fichier_solution}`"
                       target="_blank"
                       class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-brand-600 border border-brand-300 rounded-lg hover:bg-brand-50 dark:border-brand-700 dark:text-brand-400 dark:hover:bg-brand-900/20 transition"
                     >
@@ -260,6 +260,7 @@
     import router from '@/router';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
     import ListIcon from '@/icons/ListIcon.vue';
+import API_CONFIG from '@/config/api';
 
 
     const currentPageTitle = ref('Incidents materiel')
@@ -305,7 +306,7 @@
     //affichage boxPAf dans select
     const fetchBoxPaf = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/boxpaf/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/`)
 
             boxPafOptions.value = res.data.map((p: any) => ({
             label: p.numero_boxPaf,  // ce que tu veux afficher
@@ -321,7 +322,7 @@
     //affichage boxop dans select
     const fetchBoxOp = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/boxop/')
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`)
 
             boxOptions.value = res.data.map((o: any) => ({
             label: o.numero_boxOp,  // ce que tu veux afficher
@@ -410,7 +411,7 @@
                 }
             }
 
-            await axios.post('http://localhost:8000/api/materiels/create/', formData,{
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/materiels/create/`, formData,{
                 headers: { 'Content-Type': 'multipart/form-data' },
                 // titre_incident: materiel.titre_incident,
                 // nom_materiel: materiel.nom_materiel,
@@ -449,7 +450,7 @@
 
     const fetchMateriels = async () => {
     try {
-        const res = await axios.get('http://localhost:8000/api/materiels/materiel-list/')
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/materiels/materiel-list/`)
         materiels.value = res.data
     } catch (err) {
         console.error('Erreur chargement:', err)
@@ -475,7 +476,7 @@
         if (!selectedMateriel.value) return
         try {
             await axios.patch(
-            `http://localhost:8000/api/materiels/${selectedMateriel.value.id}/update/`,
+            `${API_CONFIG.LOCAL.BASE_URL}/api/materiels/${selectedMateriel.value.id}/update/`,
             {
                 titre_incident: editData.titre_incident,
                 nom_materiel: editData.nom_materiel,
@@ -502,7 +503,7 @@
         if (!selectedMateriel.value) return
         try {
             await axios.delete(
-            `http://localhost:8000/api/materiels/${selectedMateriel.value.id}/delete/`
+            `${API_CONFIG.LOCAL.BASE_URL}/api/materiels/${selectedMateriel.value.id}/delete/`
             )
             showDetailModal.value = false
             alert.showAlertNotif(

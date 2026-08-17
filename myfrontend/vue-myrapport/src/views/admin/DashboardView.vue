@@ -38,6 +38,7 @@ import ConsoPapier from '@/components/dashboard/ConsoPapier.vue'
 import ConsoImprimante from '@/components/dashboard/ConsoImprimante.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertNotifStore } from '@/stores/AlertNotif'
+import API_CONFIG from '@/config/api'
 
 const auth = useAuthStore()
 const message = ref('Chargement...')
@@ -60,7 +61,7 @@ const consoData = ref<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
 const fetchConsoBobine = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
       params: { nom: 'etiquette' }  // insensible à la casse côté backend
     })
     nbr_bobine.value = res.data.qte_restant
@@ -72,7 +73,7 @@ const fetchConsoBobine = async () => {
 
 const fetchConsoRuban = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
       params: { nom: 'ruban' }
     })
     nbr_ruban.value = res.data.qte_restant
@@ -88,7 +89,7 @@ const fetchConsoRuban = async () => {
 
 const fetchConsoRam = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/stock/dernier/', {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
       params: { nom: 'ram papier' }
     })
     nbr_entree_ram.value = res.data.qte_entree
@@ -106,7 +107,7 @@ const fetchConsoRam = async () => {
 
 const fetchConsoMensuel = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/stock/conso-mensuelle/', {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/conso-mensuelle/`, {
       params: { annee: anneeSelectionnee.value }
     })
     consoData.value = res.data.data
@@ -124,7 +125,7 @@ const fetchConsoMensuel = async () => {
 
 const fetchEncre = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/encre/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/`)
 
     // Construire la structure attendue par le composant
     encreBoxops.value = res.data.boxops

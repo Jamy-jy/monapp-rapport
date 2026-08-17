@@ -119,6 +119,7 @@ import SelectInput from '@/components/FormElement/SelectInput.vue';
 import axios from 'axios';
 import SaveBtn from '@/components/buttons/SaveBtn.vue';
 import { useAlertNotifStore } from '@/stores/AlertNotif';
+import API_CONFIG from '@/config/api';
 
 const currentPageTitle = ref('Stock')
 const alert = useAlertNotifStore()
@@ -134,7 +135,7 @@ const stockOptions = ref<Option[]>([])
 //affichage consommable dans select
 const fetchConsommable = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/consommables/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`)
 
     stockOptions.value = res.data.map((c: any) => ({
       label: c.nom_consommable,  // ce que tu veux afficher
@@ -173,7 +174,7 @@ watch(() => formData.consommable, async (newVal) => {
 
   try {
     const [res] = await Promise.all([
-      axios.get(`http://localhost:8000/api/stock/last/${newVal}/`),
+      axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/last/${newVal}/`),
 
       // delai
       new Promise(resolve => setTimeout(resolve, 1000))
@@ -259,7 +260,7 @@ const boxPafOptions = ref<Option[]>([])
 
 const fetchBoxPaf = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/boxpaf/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/`)
 
     boxPafOptions.value = res.data.map((b: any) => ({
       label: b.numero_boxPaf,
@@ -324,7 +325,7 @@ const submitForm = async () => {
     ... formData,
 }
     try {
-      const res = await axios.post('http://localhost:8000/api/stock/', playload )
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/`, playload )
       console.log('stock enregistré', res.data)
       Object.assign(
       stock, {qte_entree: 0, qte_sortie: 0, qte_restant: 0},
@@ -349,7 +350,7 @@ const submitForm = async () => {
 
   const submitBobines = async () => {
   try {
-    await axios.post('http://localhost:8000/api/bobines/createBobine/', {
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/bobines/createBobine/`, {
         bobines: bobines.value.map(b => ({
           consommable: formData.consommable,
           numero_bobine: b.numero_bobine,
@@ -400,8 +401,8 @@ const envoisEnAttente = ref<EnvoiAttente[]>([])
 const traiterEnvoi = async (id: number, action: 'valide' | 'refuse') => {
   try {
     const url = action === 'valide'
-      ? `http://localhost:8000/api/transfert-stock/${id}/valider/`
-      : `http://localhost:8000/api/transfert-stock/${id}/refuser/`
+      ? `${API_CONFIG.LOCAL.BASE_URL}/api/transfert-stock/${id}/valider/`
+      : `${API_CONFIG.LOCAL.BASE_URL}/api/transfert-stock/${id}/refuser/`
 
     const res = await axios.post(url)  
     console.log(res.data.message)
@@ -432,7 +433,7 @@ const traiterEnvoi = async (id: number, action: 'valide' | 'refuse') => {
 const fetchEnvoisEnAttente = async () => {
   try {
     // Adapter selon ton endpoint réel
-    const res = await axios.get('http://localhost:8000/api/transfert-stock/en-attente/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/transfert-stock/en-attente/`)
     envoisEnAttente.value = res.data.map((t: any) => ({
       id:              t.id,
       nom_consommable: t.consommable_nom,           

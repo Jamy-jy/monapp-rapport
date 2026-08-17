@@ -50,11 +50,12 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
+import API_CONFIG from '@/config/api'
 
 const props = defineProps({
   uploadUrl: {
     type: String,
-    default: 'http://localhost:8000/upload/',
+    default: `${API_CONFIG.LOCAL.BASE_URL}/upload/`,
   },
 })
 const emit =defineEmits(['update:files'])
@@ -132,7 +133,7 @@ onMounted(() => {
         if (!file.downloadUrl) return
 
         try {
-          await fetch('http://localhost:8000/delete-file/', {
+          await fetch(`${API_CONFIG.LOCAL.BASE_URL}/delete-file/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

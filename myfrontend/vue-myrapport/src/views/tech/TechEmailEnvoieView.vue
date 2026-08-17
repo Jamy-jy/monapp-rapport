@@ -51,6 +51,7 @@ import axios from 'axios';
 import BoiteEnvoyéLink from '@/components/buttons/BoiteEnvoyéLink.vue';
 import PageBreadcrumbTech from '@/components/common/PageBreadcrumbTech.vue';
 import { useAuthStore } from '@/stores/auth';
+import API_CONFIG from '@/config/api';
 
 const router = useRouter()
 const currentPageTitle = ref('Email envoyé')
@@ -70,7 +71,7 @@ const authStore = useAuthStore()
 
 const fetchRapports = async () => {
   try {
-    const res = await axios.get('http://localhost:8000/api/rapports/')
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/`)
 
     emails.value = res.data.map((r: any) => ({
       id: r.id,
