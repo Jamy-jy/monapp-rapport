@@ -61,7 +61,7 @@ const consoData = ref<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
 const fetchConsoBobine = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/dernier/`, {
       params: { nom: 'etiquette' }  // insensible à la casse côté backend
     })
     nbr_bobine.value = res.data.qte_restant
@@ -73,7 +73,7 @@ const fetchConsoBobine = async () => {
 
 const fetchConsoRuban = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/dernier/`, {
       params: { nom: 'ruban' }
     })
     nbr_ruban.value = res.data.qte_restant
@@ -89,7 +89,7 @@ const fetchConsoRuban = async () => {
 
 const fetchConsoRam = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/dernier/`, {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/dernier/`, {
       params: { nom: 'ram papier' }
     })
     nbr_entree_ram.value = res.data.qte_entree
@@ -107,7 +107,7 @@ const fetchConsoRam = async () => {
 
 const fetchConsoMensuel = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/conso-mensuelle/`, {
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/conso-mensuelle/`, {
       params: { annee: anneeSelectionnee.value }
     })
     consoData.value = res.data.data
@@ -125,7 +125,7 @@ const fetchConsoMensuel = async () => {
 
 const fetchEncre = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/encre/`)
 
     // Construire la structure attendue par le composant
     encreBoxops.value = res.data.boxops
@@ -157,7 +157,7 @@ onMounted(() => {
 })
 
 /* onMounted(async () => {
-  const res = await api.get('/api/hello/')
+  const res = await api.get('/hello/')
   message.value = res.data.message
 }) */
 </script>

@@ -172,7 +172,7 @@
 
   const submitForm = async () => {
     try {
-      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`, consommable)
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/consommables/`, consommable)
       consommable.nom_consommable = ''
       consommable.type_consommable = ''
       consommable.mode_consommation = ''
@@ -212,7 +212,7 @@
   
   const fetchConso = async () => {
     try {
-      const resconso = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/`)
+      const resconso = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/consommables/`)
       conso.value = resconso.data.map((c: any) => ({
         id: c.id,
         nom_consommable: c.nom_consommable,
@@ -256,7 +256,7 @@
     Object.keys(editErrors).forEach(k => delete editErrors[k])
 
     try {
-      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/consommables/${selectedConsoId.value}/`, editData)
+      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/consommables/${selectedConsoId.value}/`, editData)
       showEditModal.value = false
       await fetchConso()
       alert.showAlertNotif(
@@ -289,7 +289,7 @@
 
     try {
       await axios.delete(
-        `${API_CONFIG.LOCAL.BASE_URL}/api/consommables/${selectedConso.value.id}/`
+        `${API_CONFIG.LOCAL.BASE_URL}/consommables/${selectedConso.value.id}/`
       )
       showDeleteModal.value = false
       await fetchConso()

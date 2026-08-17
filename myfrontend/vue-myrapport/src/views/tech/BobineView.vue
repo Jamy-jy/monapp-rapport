@@ -76,7 +76,7 @@ const vinette = ref<VignetteRow[]>([])
 
 const fetchBobines = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/bobines/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/bobines/`)
     
     
     vinette.value = res.data
@@ -188,7 +188,7 @@ const submitForm = async () => {
   try {
     const payload = formatPayload()
     console.log(JSON.stringify(formatPayload(), null, 2))
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/vignettes/`,payload)
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/vignettes/`,payload)
 
     console.log('Données enregistrées', res.data)
      alert.showAlertNotif(

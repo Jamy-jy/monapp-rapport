@@ -77,7 +77,7 @@ const cancelEdit = () => {
 
 const saveModel = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/text-model/create/`, {
+    await axios.post(`http://127.0.0.1:8000/text-model/create/`, {
       text: modelValue.value,
     })
     alert.showAlertNotif(
@@ -101,7 +101,7 @@ const modeles = ref<Option[]>([])
 //affichage consommable dans select
 const fetchModeles = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/text-model/list/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/text-model/list/`)
     //Transformer en format Option { label, value }
     modeles.value = res.data.map((m: any) => ({
       label: m.text,
@@ -136,7 +136,7 @@ onMounted(() => {
 const updateModel = async () => {
   try {
     await axios.put(
-      `http://127.0.0.1:8000/api/text-model/update/${selectedModele.value}/`,
+      `http://127.0.0.1:8000/text-model/update/${selectedModele.value}/`,
       {
         text: modelValue.value,
       }
@@ -163,7 +163,7 @@ const updateModel = async () => {
 const deleteModel = async () => {
   try {
     await axios.delete(
-      `http://127.0.0.1:8000/api/text-model/delete/${selectedModele.value}/`
+      `http://127.0.0.1:8000/text-model/delete/${selectedModele.value}/`
     )
 
     alert.showAlertNotif(

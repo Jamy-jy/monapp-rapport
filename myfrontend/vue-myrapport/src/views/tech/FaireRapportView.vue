@@ -170,7 +170,7 @@ const modeles = ref<Option[]>([])
 //affichage consommable dans select
 const fetchModeles = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/text-model/list/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/text-model/list/`)
     //Transformer en format Option { label, value }
     modeles.value = res.data.map((m: any) => ({
       label: m.text,
@@ -216,7 +216,7 @@ const exportStock = async (data: {
     const token = sessionStorage.getItem('token')
 
     const response = await fetch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/export/vol/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}`,
+      `${API_CONFIG.LOCAL.BASE_URL}/export/vol/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}`,
       {
         method: 'GET',
         headers: {
@@ -257,7 +257,7 @@ const exportVol = async (data: {
   try {
     const token = sessionStorage.getItem('token')
     const response = await fetch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/export/vol/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}&table=vol`,
+      `${API_CONFIG.LOCAL.BASE_URL}/export/vol/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}&table=vol`,
       {
         method: 'GET',
         headers: {
@@ -287,7 +287,7 @@ const exportVol = async (data: {
 
 const loadDefaultEmail = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/emails_destinataire/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/emails_destinataire/`)
 
     if (res.data.length > 0) {
       destinataire.value = res.data.map((item: any) => item.emails_destiny)
@@ -316,7 +316,7 @@ const dernierIncidentId = ref<number[]>([])
 
 const fetchDernierIncident = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents-survenus/dernier/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/incidents-survenus/dernier/`)
     const incident = res.data.incident
 
     if (!incident || incident.length === 0) return
@@ -355,7 +355,7 @@ const fetchDernierIncident = async () => {
 //affichage text d'alert consommable
 const fetchAlertesRapport = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/alertes-rapport/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/alertes-rapport/`)
     const alertes = res.data.alertes
 
     if (!alertes || alertes.length === 0) return
@@ -411,7 +411,7 @@ const sendEmail = async () => {
         formData.append('files', file)
       }
     }
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/send-email/`,formData,
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/send-email/`,formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -444,7 +444,7 @@ const showBandeau = ref(false)
 
 const fetchAlertesMateriel = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/alertes/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/composant-group/alertes/`)
     alertesMateriel.value = res.data
     showBandeau.value = alertesMateriel.value.length > 0
   } catch (err) {
@@ -486,7 +486,7 @@ const submitRemplacement = async () => {
 
   try {
     await axios.post(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/${materielARemplacer.value.id}/remplacer/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/composant-group/${materielARemplacer.value.id}/remplacer/`,
       {
         ...nouveauMateriel,
         date_remplacement: new Date(nouveauMateriel.date_remplacement).toISOString(),

@@ -134,7 +134,7 @@ const deleteOptions = [
 const fetchHistorique = async () => {
   try {
     loading.value = true
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/historique/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/historique/`)
     historique.value = res.data
   } catch (err) {
     console.error('Erreur historique:', err)
@@ -145,7 +145,7 @@ const fetchHistorique = async () => {
 
 const confirmDelete = async (intervalle: string) => {
   try {
-    await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/historique/delete/`, {
+    await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/historique/delete/`, {
       data: { intervalle }
     })
     showDeleteModal.value = false

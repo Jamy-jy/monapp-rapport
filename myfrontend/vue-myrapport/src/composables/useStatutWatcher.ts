@@ -13,7 +13,7 @@ export function useStatutWatcher() {
     if (!authStore.isAuthenticated) return
 
     try {
-      await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/check-statut/`, {
+      await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/check-statut/`, {
         headers: { Authorization: `Bearer ${authStore.token}` }
       })
     } catch (err: any) {

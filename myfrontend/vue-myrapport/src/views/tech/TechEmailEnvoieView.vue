@@ -71,7 +71,7 @@ const authStore = useAuthStore()
 
 const fetchRapports = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/rapports/`)
 
     emails.value = res.data.map((r: any) => ({
       id: r.id,

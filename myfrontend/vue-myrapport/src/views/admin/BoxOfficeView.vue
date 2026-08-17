@@ -236,7 +236,7 @@
    
     const submitFormPaf = async () => {
       try {
-        const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/`, boxPaf)
+        const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/`, boxPaf)
         boxPaf.numero_boxPaf = ''
         await fetchPaf()
         console.log('Box PAF ajouté ', res.data)
@@ -271,7 +271,7 @@
 
     const fetchPaf = async () => {
       try {
-        const respaf = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/`)
+        const respaf = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/`)
         BoxPaf.value = respaf.data.map((p: any) => ({
           id: p.id,
           numero_boxPaf: p.numero_boxPaf
@@ -304,7 +304,7 @@
       Object.keys(editErrorsPaf).forEach(k => delete editErrorsPaf[k])
 
       try {
-        await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/${selectedPafId.value}/`, editDataPaf)
+        await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/${selectedPafId.value}/`, editDataPaf)
         showEditModalPaf.value = false
         await fetchPaf()
         alert.showAlertNotif(
@@ -337,7 +337,7 @@
       if (!selectedPaf.value) return
 
       try {
-        await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/${selectedPaf.value.id}/`)
+        await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/${selectedPaf.value.id}/`)
         showDeleteModalPaf.value = false
         await fetchPaf()
         alert.showAlertNotif(
@@ -362,7 +362,7 @@
 
     const submitFormOp = async () => {
       try {
-        const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`, boxOp )
+        const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`, boxOp )
         boxOp.numero_boxOp = ''
         await fetchOp()
         alert.showAlertNotif(
@@ -397,7 +397,7 @@
 
     const fetchOp = async () => {
       try {
-        const resop = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`)
+        const resop = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`)
         BoxOp.value = resop.data.map((o: any) => ({
           id: o.id,
           numero_boxOp: o.numero_boxOp
@@ -430,7 +430,7 @@
       Object.keys(editErrorsOp).forEach(k => delete editErrorsOp[k])
 
       try {
-        await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/${selectedOpId.value}/`, editDataOp)
+        await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/boxop/${selectedOpId.value}/`, editDataOp)
         showEditModalOp.value = false
         await fetchOp()
         alert.showAlertNotif(
@@ -463,7 +463,7 @@
       if (!selectedOp.value) return
 
       try {
-        await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/${selectedOp.value.id}/`)
+        await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/boxop/${selectedOp.value.id}/`)
         showDeleteModalOp.value = false
         await fetchOp()
         alert.showAlertNotif(

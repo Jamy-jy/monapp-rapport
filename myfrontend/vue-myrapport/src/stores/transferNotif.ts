@@ -13,7 +13,7 @@ export const useTransfertNotifStore = defineStore('transfertNotif', {
     actions: {
         async fetchTransferts() {
             try {
-                const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/transfert-stock/en-attente/`)
+                const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/transfert-stock/en-attente/`)
                 this.transfertsEnAttente = res.data
 
                 const alert = useAlertNotifStore()

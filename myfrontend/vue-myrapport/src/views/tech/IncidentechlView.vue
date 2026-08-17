@@ -202,7 +202,7 @@
     import TextareaInput from '@/components/FormElement/TextareaInput.vue';
     import PlaceholderInput from '@/components/FormElement/PlaceholderInput.vue';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
-import API_CONFIG from '@/config/api';
+    import API_CONFIG from '@/config/api';
 
 
     const currentPageTitle = ref('Incidents')
@@ -275,7 +275,7 @@ import API_CONFIG from '@/config/api';
 
         try {
             // Un seul endpoint — tout va dans IncidentSurvenu
-            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents-survenus/create/`, {
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/incidents-survenus/create/`, {
             nom_incident: newIncident.titre,
             type: newIncident.type,
             solutionPrise: newIncident.solution || null,
@@ -302,7 +302,7 @@ import API_CONFIG from '@/config/api';
 
     const fetchIncidents = async () => {
         try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/incidents/`)
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/incidents/`)
             incidents.value = res.data
         } catch (err) {
             console.error('Erreur chargement incidents:', err)

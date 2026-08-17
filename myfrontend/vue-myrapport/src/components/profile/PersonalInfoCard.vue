@@ -291,7 +291,7 @@ const saveProfile = async () => {
 
   try {
     const res = await axios.patch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/users/${authStore.user?.id}/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/users/${authStore.user?.id}/`,
       payload
     )
 

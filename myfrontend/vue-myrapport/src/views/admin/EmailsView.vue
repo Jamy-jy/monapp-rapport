@@ -144,7 +144,7 @@ const serverErrors = reactive<Record<string, string>>({})
 
 const submitForm = async () => {
   try {
-      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/emails_destinataire/`, email )
+      const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/emails_destinataire/`, email )
       email.nom_proprietaire = ''
       email.emails_destiny = ''
 
@@ -182,7 +182,7 @@ const columnsEmail = [
 
 const fetchEmail = async () => {
   try {
-    const resemail = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/emails_destinataire/`)
+    const resemail = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/emails_destinataire/`)
     e.value = resemail.data.map((ed: any) => ({
     id: ed.id,
     nom_proprietaire: ed.nom_proprietaire,
@@ -225,7 +225,7 @@ const fetchEmail = async () => {
     Object.keys(editErrors).forEach(k => delete editErrors[k])
 
     try {
-      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/emails_destinataire/${selectedEmailId.value}/`, editData)
+      await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/emails_destinataire/${selectedEmailId.value}/`, editData)
       showEditModal.value = false
       await fetchEmail()
       alert.showAlertNotif(
@@ -257,7 +257,7 @@ const fetchEmail = async () => {
     if (!selectedEmail.value) return
 
     try {
-      await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/api/emails_destinataire/${selectedEmail.value.id}/`)
+      await axios.delete(`${API_CONFIG.LOCAL.BASE_URL}/emails_destinataire/${selectedEmail.value.id}/`)
       showDeleteModal.value = false
       await fetchEmail()
       alert.showAlertNotif(

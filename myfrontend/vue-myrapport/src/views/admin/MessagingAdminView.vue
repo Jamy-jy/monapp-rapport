@@ -762,7 +762,7 @@ async function loadTechs(): Promise<void> {
 
     try{
        const token = sessionStorage.getItem('token')
-        const { data } = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/tech`,
+        const { data } = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/tech`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

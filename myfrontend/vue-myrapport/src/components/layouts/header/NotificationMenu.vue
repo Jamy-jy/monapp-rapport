@@ -174,7 +174,7 @@ const hasUnread = computed(() => visibleNotifications.value.length > 0)
 
 const fetchNotifications = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/notifications/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/notifications/`)
     allNotifications.value = res.data
   } catch (err) {
     console.error('Erreur notifications:', err)

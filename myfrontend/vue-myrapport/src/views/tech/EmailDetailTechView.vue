@@ -180,7 +180,7 @@ const formatDateTime = (dateStr: string): string => {
 const fetchRapport = async () => {
   try {
     const id = route.params.id
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/${id}/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/rapports/${id}/`)
     rapport.value = res.data
     console.log('RAPPORT DATA:', res.data)           // ← voir toutes les données
     console.log('EST EXPEDITEUR:', res.data.est_expediteur) 

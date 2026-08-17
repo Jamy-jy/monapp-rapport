@@ -91,7 +91,7 @@ const vols = ref<Vol[]>([])
 
 const fetchRecap = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/recap-hier/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/recap-hier/`)
     nbr_vol.value = res.data.nbr_vol
     vols.value = res.data.vols
   } catch (err) {
@@ -106,7 +106,7 @@ const emit = defineEmits<{
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/recap-hier/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/recap-hier/`)
     nbr_vol.value = res.data.nbr_vol
     vols.value = res.data.vols
     emit('tech', res.data.tech)  // ← envoyer info tech au parent

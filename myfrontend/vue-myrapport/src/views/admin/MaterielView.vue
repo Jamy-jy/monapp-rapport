@@ -260,7 +260,7 @@
     import router from '@/router';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
     import ListIcon from '@/icons/ListIcon.vue';
-import API_CONFIG from '@/config/api';
+    import API_CONFIG from '@/config/api';
 
 
     const currentPageTitle = ref('Incidents materiel')
@@ -306,7 +306,7 @@ import API_CONFIG from '@/config/api';
     //affichage boxPAf dans select
     const fetchBoxPaf = async () => {
         try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxpaf/`)
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/`)
 
             boxPafOptions.value = res.data.map((p: any) => ({
             label: p.numero_boxPaf,  // ce que tu veux afficher
@@ -322,7 +322,7 @@ import API_CONFIG from '@/config/api';
     //affichage boxop dans select
     const fetchBoxOp = async () => {
         try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`)
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`)
 
             boxOptions.value = res.data.map((o: any) => ({
             label: o.numero_boxOp,  // ce que tu veux afficher
@@ -411,7 +411,7 @@ import API_CONFIG from '@/config/api';
                 }
             }
 
-            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/materiels/create/`, formData,{
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/materiels/create/`, formData,{
                 headers: { 'Content-Type': 'multipart/form-data' },
                 // titre_incident: materiel.titre_incident,
                 // nom_materiel: materiel.nom_materiel,
@@ -450,7 +450,7 @@ import API_CONFIG from '@/config/api';
 
     const fetchMateriels = async () => {
     try {
-        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/materiels/materiel-list/`)
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/materiels/materiel-list/`)
         materiels.value = res.data
     } catch (err) {
         console.error('Erreur chargement:', err)
@@ -476,7 +476,7 @@ import API_CONFIG from '@/config/api';
         if (!selectedMateriel.value) return
         try {
             await axios.patch(
-            `${API_CONFIG.LOCAL.BASE_URL}/api/materiels/${selectedMateriel.value.id}/update/`,
+            `${API_CONFIG.LOCAL.BASE_URL}/materiels/${selectedMateriel.value.id}/update/`,
             {
                 titre_incident: editData.titre_incident,
                 nom_materiel: editData.nom_materiel,
@@ -503,7 +503,7 @@ import API_CONFIG from '@/config/api';
         if (!selectedMateriel.value) return
         try {
             await axios.delete(
-            `${API_CONFIG.LOCAL.BASE_URL}/api/materiels/${selectedMateriel.value.id}/delete/`
+            `${API_CONFIG.LOCAL.BASE_URL}/materiels/${selectedMateriel.value.id}/delete/`
             )
             showDetailModal.value = false
             alert.showAlertNotif(

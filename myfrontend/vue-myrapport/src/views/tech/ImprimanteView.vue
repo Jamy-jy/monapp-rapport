@@ -84,7 +84,7 @@ const encreBoxops = ref<any[]>([])
 
 // fetch boxOp
 const fetchBoxOps = async () => {
-  const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/boxop/`)
+  const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`)
   boxOps.value = res.data
 
   // init copies
@@ -99,7 +99,7 @@ const submitForm = async () => {
   }))
 
   try {
-    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/imprimante/`, payload)
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/imprimante/`, payload)
      alert.showAlertNotif(
             "Enregistrement effectué avec succès",
             "success"
@@ -115,7 +115,7 @@ const submitForm = async () => {
 
 const fetchEncre = async () => {
         try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/`)
+            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/encre/`)
 
             // boxop
             encreBoxops.value = res.data.boxops
@@ -145,7 +145,7 @@ const saveAll = async () => {
     for (const product of encreProducts.value) {
 
       //Sauvegarder la réserve
-      await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/reserve/`, {
+      await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/encre/reserve/`, {
         couleur_id: product.couleur_id,
         reserve: Number(product.nbr_bouteil),
       })
@@ -161,7 +161,7 @@ const saveAll = async () => {
           niveau: niveauInt,
         })
 
-        await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/encre/update/`, {
+        await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/encre/update/`, {
           couleur_id: product.couleur_id,
           boxop_id: Number(boxId),
           niveau: niveauInt,  

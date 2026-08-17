@@ -81,7 +81,7 @@ export const useMessagingStore = defineStore('messaging', () => {
     loading.value = true
     error.value   = null
     try {
-      const { data } = await axios.get<Conversation[]>(`${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/`,
+      const { data } = await axios.get<Conversation[]>(`${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/`,
         authHeaders()
       )
       conversations.value = data
@@ -95,7 +95,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function fetchSharedAdmin(): Promise<void> {
     try {
-      const { data } = await axios.get<Conversation>(`${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/shared-admin/`,
+      const { data } = await axios.get<Conversation>(`${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/shared-admin/`,
         authHeaders()
       )
       // Ajoute ou met à jour dans la liste
@@ -114,7 +114,7 @@ export const useMessagingStore = defineStore('messaging', () => {
     activeConvId.value = convId
     try {
       const { data } = await axios.get<Message[]>(
-        `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/messages/`,
+        `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/messages/`,
         authHeaders()
       )
       messages.value = data
@@ -126,7 +126,7 @@ export const useMessagingStore = defineStore('messaging', () => {
   async function sendMessage(convId: number, content: string): Promise<void> {
     try {
       const { data } = await axios.post<Message>(
-        `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/messages/`,
+        `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/messages/`,
         { content },
         authHeaders()
       )
@@ -143,7 +143,7 @@ export const useMessagingStore = defineStore('messaging', () => {
   async function createPrivateConv(techIds: number[]): Promise<Conversation[]> {
     const token = sessionStorage.getItem('token')
     const { data } = await axios.post<Conversation[]>(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/private/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/private/`,
       { tech_ids: techIds },
       authHeaders()
     )
@@ -153,7 +153,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function createGroup(name: string, techIds: number[]): Promise<Conversation> {
     const { data } = await axios.post<Conversation>(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/group/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/group/`,
       { name, tech_ids: techIds },
       authHeaders()
     )
@@ -166,7 +166,7 @@ export const useMessagingStore = defineStore('messaging', () => {
     content: string
   ): Promise<BroadcastResult[]> {
     const { data } = await axios.post<BroadcastResult[]>(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/broadcast/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/broadcast/`,
       { tech_ids: techIds, content },
       authHeaders()
     )
@@ -185,7 +185,7 @@ export const useMessagingStore = defineStore('messaging', () => {
     content: string
   ): Promise<SmsResultat> {
     const { data } = await axios.post(
-      '${API_CONFIG.LOCAL.BASE_URL}/api/messaging/sms/',
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/sms/`,
       { tech_ids: techIds, content },
       authHeaders()
     )
@@ -194,7 +194,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function addMember(convId: number, userId: number): Promise<void> {
     await axios.post(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/members/add/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/members/add/`,
       { user_id: userId },
       authHeaders()
     )
@@ -203,7 +203,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function removeMember(convId: number, userId: number): Promise<void> {
     await axios.delete(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/members/${userId}/remove/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/members/${userId}/remove/`,
       authHeaders()
     )
     await fetchConversations()
@@ -211,7 +211,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function deleteConversation(convId: number): Promise<void> {
     await axios.delete(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/delete/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/delete/`,
       authHeaders()
     )
     conversations.value = conversations.value.filter(c => c.id !== convId)
@@ -223,7 +223,7 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   async function deleteMessage(convId: number, msgId: number): Promise<void> {
     await axios.delete(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/messaging/conversations/${convId}/messages/${msgId}/delete/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/messages/${msgId}/delete/`,
       authHeaders()
     )
     messages.value = messages.value.filter(m => m.id !== msgId)

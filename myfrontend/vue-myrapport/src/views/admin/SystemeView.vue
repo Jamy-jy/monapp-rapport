@@ -326,7 +326,7 @@ const submitForm = async (avecSolution: boolean) => {
       }
     }
 
-    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/systemes/create/`, formData, {
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/systemes/create/`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
       // titre_systeme: system.titre_systeme,
       // solution: avecSolution ? system.solution : '',
@@ -368,7 +368,7 @@ const updateSysteme = async () => {
   if (!selectedSysteme.value) return
   try {
     await axios.patch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/systemes/${selectedSysteme.value.id}/update/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/systemes/${selectedSysteme.value.id}/update/`,
       {
         titre_systeme: editData.titre_systeme,
         solution: editData.solution,
@@ -394,7 +394,7 @@ const deleteSysteme = async () => {
   if (!selectedSysteme.value) return
   try {
     await axios.delete(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/systemes/${selectedSysteme.value.id}/delete/`
+      `${API_CONFIG.LOCAL.BASE_URL}/systemes/${selectedSysteme.value.id}/delete/`
     )
     showDetailModal.value = false
     alert.showAlertNotif(
@@ -414,7 +414,7 @@ const deleteSysteme = async () => {
 // Charger la liste
 const fetchSystemes = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/systemes/system-list/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/systemes/system-list/`)
     systemes.value = res.data
   } catch (err) {
     console.error('Erreur chargement:', err)

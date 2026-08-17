@@ -80,7 +80,7 @@ const sendEmail = async () => {
         formData.append('files', file)
       }
     }
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/send-email/`,formData,
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/send-email/`,formData,
       {
         headers: {
           'Content-Type': 'multipart/form-data'

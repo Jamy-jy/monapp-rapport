@@ -118,7 +118,7 @@ const formatDate = (dateStr: string): string => {
 
 const fetchRecus = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/recus/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/rapports/recus/`)
     emails.value = res.data.map((r: any) => ({
       id: r.id,
       sender: r.user_nom,
@@ -151,7 +151,7 @@ onMounted(() => {
 // Supprimer email — marque is_delete = true côté backend
 const supprimerEmail = async (id: number) => {
   try {
-    await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/api/rapports/recus/${id}/delete/`)
+    await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/rapports/recus/${id}/delete/`)
     // Retirer immédiatement de la liste sans refetch
     emails.value = emails.value.filter(e => e.id !== id)
     alert.showAlertNotif(

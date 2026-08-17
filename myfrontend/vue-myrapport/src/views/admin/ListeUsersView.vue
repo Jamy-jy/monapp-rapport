@@ -118,7 +118,7 @@ const columns = [
 //recuperation de donnée depuis API
 const fetchUsers = async () => {
     try {
-        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/users/`)
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/users/`)
         //assignation au colonne
         users.value = res.data.map((u: any) => ({
             id: u.id,
@@ -160,7 +160,7 @@ const submitEdit = async () => {
 
   try {
     await axios.patch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/users/${selectedUserId.value}/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/users/${selectedUserId.value}/`,
       editData
     )
     showModal.value = false
@@ -185,7 +185,7 @@ const submitEdit = async () => {
 const toggleStatut = async (row: any) => {
   try {
     await axios.patch(
-      `${API_CONFIG.LOCAL.BASE_URL}/api/users/${row.id}/toggle-statut/`
+      `${API_CONFIG.LOCAL.BASE_URL}/users/${row.id}/toggle-statut/`
     )
     await fetchUsers()  // rafraîchir la liste
   } catch (err) {

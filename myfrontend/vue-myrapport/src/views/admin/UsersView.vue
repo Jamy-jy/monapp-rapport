@@ -163,7 +163,7 @@ const submitForm = async () => {
   Object.keys(serverErrors).forEach(k => delete serverErrors[k])
 
   try {
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/users/`, payload )
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/users/`, payload )
     console.log('Utilisateur ajouté', res.data)
 
     //reset formulaire

@@ -201,7 +201,7 @@ import API_CONFIG from '@/config/api';
 
     const fetchGroup = async () => {
       try {
-        const resg = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/`)
+        const resg = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/inventaire/`)
         Group.value = resg.data.map((g: any) => ({
           id: g.id,
           nom_group: g.nom_group,
@@ -296,7 +296,7 @@ import API_CONFIG from '@/config/api';
         }
 
         const response = await axios.post(
-          `${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`,
+          `${API_CONFIG.LOCAL.BASE_URL}/composant-group/`,
           payload
         )
 
@@ -373,7 +373,7 @@ import API_CONFIG from '@/config/api';
       showModalListComposantGroup.value = true
 
       try {
-        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, {
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/composant-group/`, {
           params: { group: row.id, pending: 'true' },
         })
         composantGroupList.value = res.data
@@ -451,7 +451,7 @@ import API_CONFIG from '@/config/api';
             // composant_created_at n'est pas envoyé -> le backend applique default=timezone.now
           }
 
-          return axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, payload)
+          return axios.post(`${API_CONFIG.LOCAL.BASE_URL}/composant-group/`, payload)
         })
 
         const responses = await Promise.all(requests.filter(Boolean))

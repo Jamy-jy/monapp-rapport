@@ -128,7 +128,7 @@ const fetchData = async () => {
   results.value = []
 
   try {
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/proxy/report-visa/`, {
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/proxy/report-visa/`, {
         begin: dateDebut.value,  // 
         end: dateFin.value,      // 
     })
@@ -186,7 +186,7 @@ const saveData = async () => {
       }))
     }
 
-    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/mouvements-vol/`, payload)
+    const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/mouvements-vol/`, payload)
     console.log('Enregistré:', res.data)
     
 

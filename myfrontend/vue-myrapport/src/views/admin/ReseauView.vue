@@ -239,7 +239,7 @@
     import TextareaInput from '@/components/FormElement/TextareaInput.vue';
     import router from '@/router';
     import ListIcon from '@/icons/ListIcon.vue';
-import API_CONFIG from '@/config/api';
+    import API_CONFIG from '@/config/api';
 
     const currentPageTitle = ref('Incident Reseau')
 
@@ -325,7 +325,7 @@ import API_CONFIG from '@/config/api';
                 }
             }
 
-            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/create/`, formData, {
+            await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/reseaux/create/`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
 
@@ -365,7 +365,7 @@ import API_CONFIG from '@/config/api';
         if (!selectedReseau.value) return
         try {
             await axios.patch(
-            `${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/${selectedReseau.value.id}/update/`,
+            `${API_CONFIG.LOCAL.BASE_URL}/reseaux/${selectedReseau.value.id}/update/`,
             {
                 nom_incident_reseau: editData.nom_incident_reseau,
                 solution_incident_reseau: editData.solution,
@@ -391,7 +391,7 @@ import API_CONFIG from '@/config/api';
         if (!selectedReseau.value) return
         try {
             await axios.delete(
-            `${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/${selectedReseau.value.id}/delete/`
+            `${API_CONFIG.LOCAL.BASE_URL}/reseaux/${selectedReseau.value.id}/delete/`
             )
             showDetailModal.value = false
             alert.showAlertNotif(
@@ -411,7 +411,7 @@ import API_CONFIG from '@/config/api';
     // Charger la liste
     const fetchReseaux = async () => {
     try {
-        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/reseaux/reseau-list/`)
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/reseaux/reseau-list/`)
         reseaux.value = res.data
     } catch (err) {
         console.error('Erreur chargement:', err)

@@ -170,7 +170,7 @@ const chartOptions = computed<ApexOptions>(() => ({
 
 const fetchRam = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/stock/ram/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/stock/ram/`)
     pourcentage.value = res.data.pourcentage
     pourcentageTotal.value = res.data.pourcentage_total  // texte réel
     qteRestant.value = res.data.qte_restant

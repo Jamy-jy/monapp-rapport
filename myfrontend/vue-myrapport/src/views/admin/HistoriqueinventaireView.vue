@@ -86,7 +86,7 @@ const formData = reactive({
 
 const fetchGroup = async () => {
   try {
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/inventaire/`)
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/inventaire/`)
 
     groupOptions.value = res.data.map((g: any) => ({
       label: g.nom_group,  // ce que tu veux afficher
@@ -160,7 +160,7 @@ const handelClick = async () => {
       params.date_fin = new Date(dateFin.value).toISOString()
     }
 
-    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/api/composant-group/`, { params })
+    const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/composant-group/`, { params })
     historiqueList.value = res.data
   } catch (err) {
     console.error(err)
