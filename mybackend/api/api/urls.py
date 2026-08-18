@@ -24,7 +24,7 @@ from emails_destinataire.views import emails_destinataireViewset
 from stock_consommables.views import boxPafViewSet, boxOpViewSet, stockViewSet, vignetteViewSet, bobineViewSet, imprimanteViewSet, NiveauEncreListView, ReserveEncreUpdateView, NiveauEncreUpdateView, HistoriqueStockView, HistoriqueDeleteView, StockBureauView, StockBureauAlerteView, TransfertPendingListView, TransfertValiderView, TransfertRefuserView
 from stock_consommables.export import export_stock_consommable, export_vol
 from myrapport.views import FileUploadView, FileDeleteView, SendEmailView, RapportJournalListView, RapportJournalDetailView, RapportJournalRecuListView, RapportJournalRecuDetailView, RapportJournalDeleteView, TextModelCreateView, TextModelListView, TextModelUpdateView, TextModelDeleteView, AlerteRapportStockView
-from mouvement_vol.views import categorieSejourViewset, ExternalolView, MouvementVolCreateView, RecapHierView
+from mouvement_vol.views import categorieSejourViewset, ExternalAPIVolView, MouvementVolCreateView, RecapHierView
 from incidents.views import SystemeListView, SystemeCreateView, SystemeUpdateView, SystemeDeleteView, MaterielListView, MaterielCreateView, MaterielUpdateView, MaterielDeleteView, ReseauListView, ReseauCreateView, ReseauUpdateView , ReseauDeleteView, IncidentsListCombinesView, IncidentSurvenuCreateView, DernierIncidentUserView, TechlistIncidentSurvenuView, SearchTechIncidentView
 from messaging.views import my_conversations, send_sms, shared_admin_conversation, create_private_conversation, create_group, broadcast_message, MessageListCreate, add_member, remove_member, delete_conversation, delete_message
 from inventaire.views import GroupInventaireViewset, ComposantGroupViewSet,  alertes_materiel, materiels_a_verifier, remplacer_materiel, SiteViewset
@@ -75,7 +75,7 @@ urlpatterns = [
     path('rapports/', RapportJournalListView.as_view(), name='rapports-list'),
     path('rapports/<int:pk>/', RapportJournalDetailView.as_view(), name='rapports-detail'),
 
-    path('proxy/report-visa/', ExternalolView.as_view(), name='proxy-report-visa'),
+    path('proxy/report-visa/', ExternalAPIVolView.as_view(), name='proxy-report-visa'),
 
     path('mouvements-vol/', MouvementVolCreateView.as_view(), name='mouvements-vol'),
 
