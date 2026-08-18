@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from login.views import LoginView, LogoutView, CheckStatutView
 from users.views import UserViewSet, TechListView
-from consommables.views import consommableViewset, DernierRestantView, RamPrView, ConsoMensuelleView, NotificationView
+from consommables.views import consommableViewset, DernierRestantView, RamPapierView, ConsoMensuelleView, NotificationView
 from emails_destinataire.views import emails_destinataireViewset
 from stock_consommables.views import boxPafViewSet, boxOpViewSet, stockViewSet, vignetteViewSet, bobineViewSet, imprimanteViewSet, NiveauEncreListView, ReserveEncreUpdateView, NiveauEncreUpdateView, HistoriqueStockView, HistoriqueDeleteView, StockBureauView, StockBureauAlerteView, TransfertPendingListView, TransfertValiderView, TransfertRefuserView
 from stock_consommables.export import export_stock_consommable, export_vol
@@ -64,7 +64,7 @@ urlpatterns = [
     path('export/vol/', export_vol, name='export-vol'),
     
     path('stock/dernier/', DernierRestantView.as_view(), name='stock-dernier'),
-    path('stock/ram/', RamPrView.as_view(), name='stock-ram'),
+    path('stock/ram/', RamPapierView.as_view(), name='stock-ram'),
     path('stock/conso-mensuelle/', ConsoMensuelleView.as_view(), name='conso-mensuelle'),
     path('stock/alertes-rapport/', AlerteRapportStockView.as_view(), name='stock-alertes'),
     
