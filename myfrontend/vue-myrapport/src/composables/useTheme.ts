@@ -28,7 +28,7 @@ export function useThemeProvider(): ThemeContext {
   const themeKey = `theme_user_${authStore.user?.id}_${authStore.user?.role}`
 
   const theme = ref<Theme>(
-    (sessionStorage.getItem(themeKey) as Theme) || 'light'
+    (sessionStorage.getItem(themeKey) as Theme) || 'dark'
   )
 
   // init depuis sessionStorage
