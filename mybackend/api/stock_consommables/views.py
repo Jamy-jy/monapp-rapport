@@ -23,6 +23,7 @@ from .serializers import vignetteSerializer
 from .serializers import bobineSerializer
 from .serializers import boxOpSerializer
 from .serializers import imprimanteSerializer
+from .serializers import StockBureauSerializer
 from django.utils import timezone
 from datetime import timedelta
 import traceback
@@ -666,4 +667,10 @@ class TransfertRefuserView(APIView):
             "message": "Transfert refusé, stock remis dans le dépôt A",
             "qte_restant_bureau": nouveau_restant_a
         }, status=200)
+
+class StockBureauListView(APIView):
+    def get(self, request):
+        queryset = StockBureau.objects.select_related('consommable', 'user').all().order_by('-date_mouvement_bureau')
+        serializer = StockBureauSerializer(queryset, many=True)
+        return Response(serializer.data)
 # Create your views here.

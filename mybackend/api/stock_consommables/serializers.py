@@ -6,6 +6,7 @@ from .models import Stock_consommable
 from .models import Vignettes
 from .models import Bobine
 from .models import Imprimante
+from .models import StockBureau
 
 class boxPafSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,3 +83,24 @@ class imprimanteSerializer(serializers.ModelSerializer):
         model = Imprimante
         fields = "__all__"
 
+class StockBureauSerializer(serializers.ModelSerializer):
+    consommable_nom = serializers.CharField(source='consommable.nom_consommable', read_only=True)
+    user_nom_complet = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StockBureau
+        fields = [
+            'id',
+            'consommable_nom',
+            'user_nom_complet',
+            'qte_entree_bureau',
+            'qte_envoye_bureau',
+            'qte_restant_bureau',
+            'nom_site',
+            'date_mouvement_bureau',
+        ]
+
+    def get_user_nom_complet(self, obj):
+        if obj.user:
+            return f"{obj.user.nom} {obj.user.prenom}".strip()
+        return ""

@@ -618,6 +618,7 @@ import WarningTriangleIcon from '@/icons/WarningTriangleIcon.vue'
 import WarningIcon from '@/icons/WarningIcon.vue'
 import ErrorCircleIcon from '@/icons/ErrorCircleIcon.vue'
 import API_CONFIG from '@/config/api'
+import { usePollingAction } from '@/composables/usePollingAction'
 
 const currentPageTitle = ref('Messagerie')
 const store     = useMessagingStore()
@@ -637,19 +638,44 @@ const convsFiltrees = computed(() =>
 onMounted(async () => {
   await store.fetchConversations()
   const id = Number(route.params.convId)
-  if (id) store.fetchMessages(id)
+  if (id && !isNaN(id)){
+   await store.fetchMessages(id)
+  }
 })
 
-watch(() => route.params.convId, id => {
-  if (id) store.fetchMessages(Number(id))
-})
+watch(() => route.params.convId, async id => {
+  if (id && !isNaN(Number(id)) ) {
+    await store.fetchMessages(Number(id))
+  }
+}, { immediate: false })
 
-watch(() => store.messages, () => {
+// ── Auto-scroll intelligent : ne force le scroll bas que si l'user y était déjà ──
+  function isNearBottom(): boolean {
+    if (!scrollRef.value) return true
+    const el = scrollRef.value
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 100
+  }
+
+watch(() => store.messages, (newVal, oldVal) => {
+  const wasNearBottom = isNearBottom()
+  const hasNewMessage = newVal.length !== (oldVal?.length ?? 0)
   nextTick(() => {
-    if (scrollRef.value)
+    if (scrollRef.value && hasNewMessage && wasNearBottom)
       scrollRef.value.scrollTop = scrollRef.value.scrollHeight
   })
 }, { deep: true })
+
+ // ── POLLING : liste des conversations (toutes les 5s) ──
+  usePollingAction(async () => {
+    await store.fetchConversations(true)
+  }, 5000)
+
+  // ── POLLING : messages de la conversation active (toutes les 3s) ──
+  usePollingAction(async () => {
+    if (store.activeConvId) {
+      await store.fetchMessages(store.activeConvId, true)
+    }
+  }, 3000)
 
 function openConv(id: number): void {
   router.push({ name: 'admin-messaging-conv', params: { convId: id } })

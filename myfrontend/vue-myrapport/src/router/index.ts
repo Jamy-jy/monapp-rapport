@@ -38,6 +38,7 @@ import stockBureauView from '@/views/admin/stockBureauView.vue'
 import InventaireView from '@/views/admin/InventaireView.vue'
 import InventaireTechView from '@/views/tech/InventaireTechView.vue'
 import HistoriqueinventaireView from '@/views/admin/HistoriqueinventaireView.vue'
+import HistoriqueStockBureauView from '@/views/admin/HistoriqueStockBureauView.vue'
 /* import { title } from 'process' */
 
 const router = createRouter({
@@ -231,6 +232,14 @@ const router = createRouter({
           component: HistoriqueinventaireView,
           meta: {
             title: 'Historique inventaire'
+          }
+        },
+        {
+          path: 'Historique-stockBureau',
+          name: 'historique stockBureau',
+          component: HistoriqueStockBureauView,
+          meta: {
+            title: 'Historique stockBureau'
           }
         },
         {

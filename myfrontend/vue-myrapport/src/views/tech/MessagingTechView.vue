@@ -170,56 +170,78 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import PageBreadcrumbAdmin from '@/components/common/PageBreadcrumbAdmin.vue'
-import ComponentCard from '@/components/common/ComponentCard.vue'
-import { useMessagingStore, type ConvType } from '@/stores/messaging'
-import { useAuthStore } from '@/stores/auth'
-import TextareaInput from '@/components/FormElement/TextareaInput.vue'
+  import { ref, watch, nextTick, onMounted } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import PageBreadcrumbAdmin from '@/components/common/PageBreadcrumbAdmin.vue'
+  import ComponentCard from '@/components/common/ComponentCard.vue'
+  import { useMessagingStore, type ConvType } from '@/stores/messaging'
+  import { useAuthStore } from '@/stores/auth'
+  import TextareaInput from '@/components/FormElement/TextareaInput.vue'
+  import { usePollingAction } from '@/composables/usePollingAction'
 
-const currentPageTitle = ref('Messagerie')
-const store     = useMessagingStore()
-const authStore = useAuthStore()
-const route     = useRoute()
-const router    = useRouter()
-const draft     = ref('')
-const scrollRef = ref<HTMLElement | null>(null)
+  const currentPageTitle = ref('Messagerie')
+  const store     = useMessagingStore()
+  const authStore = useAuthStore()
+  const route     = useRoute()
+  const router    = useRouter()
+  const draft     = ref('')
+  const scrollRef = ref<HTMLElement | null>(null)
 
-onMounted(async () => {
-  await store.fetchConversations()
-  const id = Number(route.params.convId)
-  if (id && !isNaN(id)){
-    await store.fetchMessages(id)
-    }
-})
-
-watch(() => route.params.convId,  async id => {
-   if (id && !isNaN(Number(id))) {
-    await store.fetchMessages(Number(id))
-  }
-}, { immediate: false })
-
-watch(() => store.messages, () => {
-   nextTick(() => {
-    if (scrollRef.value)
-      scrollRef.value.scrollTop = scrollRef.value.scrollHeight
+  onMounted(async () => {
+    await store.fetchConversations()
+    const id = Number(route.params.convId)
+    if (id && !isNaN(id)){
+      await store.fetchMessages(id)
+      }
   })
-}, { deep: true })
 
-function openConv(id: number): void {
-  router.push({ name: 'tech-messaging-conv', params: { convId: id } })
-}
+  watch(() => route.params.convId,  async id => {
+    if (id && !isNaN(Number(id))) {
+      await store.fetchMessages(Number(id))
+    }
+  }, { immediate: false })
 
-async function send(): Promise<void> {
-  if (!draft.value.trim() || !store.activeConvId) return
-  await store.sendMessage(store.activeConvId, draft.value.trim())
-  draft.value = ''
-}
+  // ── Auto-scroll intelligent : ne force le scroll bas que si l'user y était déjà ──
+  function isNearBottom(): boolean {
+    if (!scrollRef.value) return true
+    const el = scrollRef.value
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 100
+  }
 
-const typeLabel = (t: ConvType): string =>
-  ({ shared_admin: 'Admins', private: 'Privé', group: 'Groupe' }[t])
+  watch(() => store.messages, (newVal, oldVal) => {
+    const wasNearBottom = isNearBottom()
+    const hasNewMessage = newVal.length !== (oldVal?.length ?? 0)
+    nextTick(() => {
+      if (scrollRef.value && hasNewMessage && wasNearBottom)
+        scrollRef.value.scrollTop = scrollRef.value.scrollHeight
+    })
+  }, { deep: true })
 
-const formatTime = (iso: string): string =>
-  new Date(iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+  // ── POLLING : liste des conversations (toutes les 5s) ──
+  usePollingAction(async () => {
+    await store.fetchConversations(true)
+  }, 5000)
+
+  // ── POLLING : messages de la conversation active (toutes les 3s) ──
+  usePollingAction(async () => {
+    if (store.activeConvId) {
+      await store.fetchMessages(store.activeConvId, true)
+    }
+  }, 3000)
+
+  function openConv(id: number): void {
+    router.push({ name: 'tech-messaging-conv', params: { convId: id } })
+  }
+
+  async function send(): Promise<void> {
+    if (!draft.value.trim() || !store.activeConvId) return
+    await store.sendMessage(store.activeConvId, draft.value.trim())
+    draft.value = ''
+  }
+
+  const typeLabel = (t: ConvType): string =>
+    ({ shared_admin: 'Admins', private: 'Privé', group: 'Groupe' }[t])
+
+  const formatTime = (iso: string): string =>
+    new Date(iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
 </script>

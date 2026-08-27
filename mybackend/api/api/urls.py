@@ -21,7 +21,7 @@ from login.views import LoginView, LogoutView, CheckStatutView
 from users.views import UserViewSet, TechListView
 from consommables.views import consommableViewset, DernierRestantView, RamPapierView, ConsoMensuelleView, NotificationView
 from emails_destinataire.views import emails_destinataireViewset
-from stock_consommables.views import boxPafViewSet, boxOpViewSet, stockViewSet, vignetteViewSet, bobineViewSet, imprimanteViewSet, NiveauEncreListView, ReserveEncreUpdateView, NiveauEncreUpdateView, HistoriqueStockView, HistoriqueDeleteView, StockBureauView, StockBureauAlerteView, TransfertPendingListView, TransfertValiderView, TransfertRefuserView
+from stock_consommables.views import boxPafViewSet, boxOpViewSet, stockViewSet, vignetteViewSet, bobineViewSet, imprimanteViewSet, NiveauEncreListView, ReserveEncreUpdateView, NiveauEncreUpdateView, HistoriqueStockView, HistoriqueDeleteView, StockBureauView, StockBureauAlerteView, TransfertPendingListView, TransfertValiderView, TransfertRefuserView, StockBureauListView
 from stock_consommables.export import export_stock_consommable, export_vol
 from myrapport.views import FileUploadView, FileDeleteView, SendEmailView, RapportJournalListView, RapportJournalDetailView, RapportJournalRecuListView, RapportJournalRecuDetailView, RapportJournalDeleteView, TextModelCreateView, TextModelListView, TextModelUpdateView, TextModelDeleteView, AlerteRapportStockView
 from mouvement_vol.views import categorieSejourViewset, ExternalAPIVolView, MouvementVolCreateView, RecapHierView
@@ -126,6 +126,7 @@ urlpatterns = [
 
     path('stock-bureau/', StockBureauView.as_view(), name='stock-bureau'),
     path('stock-bureau/alertes/', StockBureauAlerteView.as_view(), name='stock-alertes'),
+    path('stock-bureau/list/', StockBureauListView.as_view(), name='stock-bureau-list'),
 
     path('transfert-stock/en-attente/', TransfertPendingListView.as_view(), name='transfert-pending'),
     path('transfert-stock/<int:transfert_id>/valider/', TransfertValiderView.as_view(), name='transfert-valider'),

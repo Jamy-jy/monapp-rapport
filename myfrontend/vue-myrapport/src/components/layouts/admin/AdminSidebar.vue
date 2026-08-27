@@ -269,7 +269,7 @@ const menuGroups: MenuGroup[] = [
       },
       {
         icon: officeIcon,
-        name: 'Box office',
+        name: 'Box aéroport',
         path: '/admin/box',
       },
       {

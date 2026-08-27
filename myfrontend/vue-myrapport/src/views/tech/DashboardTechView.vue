@@ -53,7 +53,7 @@
     import LastRecapVol from '@/components/dashboard/LastRecapVol.vue';
     import axios from 'axios'
     import { useAlertNotifStore } from '@/stores/AlertNotif';
-import API_CONFIG from '@/config/api';
+    import API_CONFIG from '@/config/api';
 
     const encreProducts = ref<any[]>([])
     const encreBoxops = ref<any[]>([])
@@ -105,6 +105,8 @@ import API_CONFIG from '@/config/api';
             console.error('Erreur chargement encre:', err)
         }
     }
+
+    
 
     const fetchConsoRam = async () => {
         try {

@@ -1,4 +1,3 @@
-// src/stores/messaging.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
@@ -77,19 +76,25 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   // --- Conversations -----------------------------------------------------
 
-  async function fetchConversations(): Promise<void> {
-    loading.value = true
+  async function fetchConversations(silent: boolean = false): Promise<void> {
+    if (!silent) loading.value = true
     error.value   = null
     try {
       const { data } = await axios.get<Conversation[]>(`${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/`,
         authHeaders()
       )
-      conversations.value = data
+      // n'assigne que si le contenu a réellement changé -> évite re-render inutile
+      if (JSON.stringify(data) !== JSON.stringify(conversations.value)) {
+        conversations.value = data
+      }
     } catch (e: any) {
-      error.value = e?.response?.data?.detail ?? 'Erreur de chargement'
-      conversations.value = []
+      if (!silent) {
+        error.value = e?.response?.data?.detail ?? 'Erreur de chargement'
+      }
+      // en silencieux, on ne vide pas la liste sur une erreur réseau ponctuelle
+      if (!silent) conversations.value = []
     } finally {
-      loading.value = false
+       if (!silent) loading.value = false
     }
   }
 
@@ -110,16 +115,21 @@ export const useMessagingStore = defineStore('messaging', () => {
 
   // --- Messages ---------------------------------------------------------
 
-  async function fetchMessages(convId: number): Promise<void> {
+  async function fetchMessages(convId: number, silent: boolean = false): Promise<void> {
     activeConvId.value = convId
     try {
       const { data } = await axios.get<Message[]>(
         `${API_CONFIG.LOCAL.BASE_URL}/messaging/conversations/${convId}/messages/`,
         authHeaders()
       )
-      messages.value = data
+      // ne remplace le tableau que si le nombre ou le contenu diffère
+      if (JSON.stringify(data) !== JSON.stringify(messages.value)) {
+        messages.value = data
+      }
     } catch (e: any) {
-      error.value = e?.response?.data?.detail ?? 'Erreur'
+      if (!silent) {
+        error.value = e?.response?.data?.detail ?? 'Erreur'
+      }
     }
   }
 

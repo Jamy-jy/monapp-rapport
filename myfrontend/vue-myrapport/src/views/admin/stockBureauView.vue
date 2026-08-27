@@ -1,6 +1,11 @@
 <template>
     <PageBreadcrumbAdmin :pageTitle="currentPageTitle"/>
-    <ComponentCard title="Stock">
+    <ComponentCard 
+        title="Stock"
+        textClick="Historique"
+        @clickText="openHistoriqueList"
+        :icon="ListIcon"
+        >
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-5">
             <SelectInput
               label="consommable"
@@ -50,6 +55,8 @@
     import axios from 'axios';
     import { useAlertNotifStore } from '@/stores/AlertNotif';
     import API_CONFIG from '@/config/api';
+    import ListIcon from '@/icons/ListIcon.vue';
+    import router from '@/router';
 
     const currentPageTitle = ref('Mouvement de stock');
 
@@ -225,4 +232,8 @@
         fetchConsommable()
         fetchAlertesStock()
     })
+
+    const openHistoriqueList  = () => {
+      router.push('/admin/Historique-stockBureau')
+    }
 </script>
