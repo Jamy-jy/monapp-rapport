@@ -365,7 +365,7 @@ def send_sms(request):
             url = 'https://rest.messagebird.com/messages'
             # url = 'https://developers.messagebird.com/api/'
             print("URL ENVOI:", url)
-
+            
             print("HTTP_PROXY:", os.environ.get('HTTP_PROXY', 'None'))
             print("HTTPS_PROXY:", os.environ.get('HTTPS_PROXY', 'None'))
             # Appel API MessageBird

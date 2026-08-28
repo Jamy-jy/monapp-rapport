@@ -143,10 +143,29 @@ const passwordError = computed(() => {
 //Validation phone
 const phoneError = computed(() => {
   if (!user.phone) return ''
-  const digits = user.phone.replace(/\s/g, '')
-  if (!/^\d+$/.test(digits)) return 'Le numéro doit contenir uniquement des chiffres'
-  if (digits.length !== 10) return `${digits.length}/10 chiffres - exactement 10 requis`
-  return ''
+  const raw = user.phone.replace(/\s/g, '').replace(/-/g, '')
+
+  // Format international : +261 + 9 chiffres
+  if (raw.startsWith('+261')) {
+    const digits = raw.slice(4)
+    if (!/^\d*$/.test(digits)) return 'Uniquement des chiffres après +261'
+    const diff = 9 - digits.length
+    if (diff > 0) return `Il manque ${diff} chiffre(s) après +261 (9 attendus)`
+    if (diff < 0) return `Il y a ${-diff} chiffre(s) en trop après +261 (9 attendus)`
+    return ''
+  }
+
+  // Format local : 0 + 9 chiffres
+  if (raw.startsWith('0')) {
+    if (!/^\d+$/.test(raw)) return 'Le numéro doit contenir uniquement des chiffres'
+    const digits = raw.slice(1)
+    const diff = 9 - digits.length
+    if (diff > 0) return `Il manque ${diff} chiffre(s) (9 attendus après le 0)`
+    if (diff < 0) return `Il y a ${-diff} chiffre(s) en trop (9 attendus après le 0)`
+    return ''
+  }
+
+  return 'Le numéro doit commencer par 0 ou +261'
 })
 
 const submitForm = async () => {

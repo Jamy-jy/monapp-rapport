@@ -220,7 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import axios from 'axios'
 import Modal from './Modal.vue'
 import UpdateBtn from '../buttons/UpdateBtn.vue'
@@ -268,14 +268,33 @@ const saveProfile = async () => {
     return
   }
 
-  // Validation phone
-  if (formData.phone) {
-    const digits = formData.phone.replace(/\s/g, '')
-    if (!/^\d+$/.test(digits) || digits.length !== 10) {
-      errors.phone = 'Le numéro doit contenir exactement 10 chiffres'
-      return
+  //Validation phone
+  const phoneError = computed(() => {
+    if (!formData.phone) return ''
+    const raw = formData.phone.replace(/\s/g, '').replace(/-/g, '')
+
+    // Format international : +261 + 9 chiffres
+    if (raw.startsWith('+261')) {
+      const digits = raw.slice(4)
+      if (!/^\d*$/.test(digits)) return 'Uniquement des chiffres après +261'
+      const diff = 9 - digits.length
+      if (diff > 0) return `Il manque ${diff} chiffre(s) après +261 (9 attendus)`
+      if (diff < 0) return `Il y a ${-diff} chiffre(s) en trop après +261 (9 attendus)`
+      return ''
     }
-  }
+
+    // Format local : 0 + 9 chiffres
+    if (raw.startsWith('0')) {
+      if (!/^\d+$/.test(raw)) return 'Le numéro doit contenir uniquement des chiffres'
+      const digits = raw.slice(1)
+      const diff = 9 - digits.length
+      if (diff > 0) return `Il manque ${diff} chiffre(s) (9 attendus après le 0)`
+      if (diff < 0) return `Il y a ${-diff} chiffre(s) en trop (9 attendus après le 0)`
+      return ''
+    }
+
+    return 'Le numéro doit commencer par 0 ou +261'
+  })
 
   // Construire le payload — exclure confirmPassword et password vide
   const payload: Record<string, string> = {

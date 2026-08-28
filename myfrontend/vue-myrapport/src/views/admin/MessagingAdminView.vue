@@ -735,13 +735,13 @@ async function confirmSendSms(): Promise<void> {
     // Si tout envoyé -> vider le draft
     if (result.total_erreur === 0) {
       draft.value = ''
-    }
+    } 
 
   } catch (err) {
     console.error('Erreur SMS:', err)
   } finally {
     smsSending.value = false
-  }
+  } 
 }
 
 // --- Modal groupe-------------------------------------------------------------
