@@ -40,7 +40,20 @@ def validate_phone(phone: str):
         return 
 
     raise ValidationError("Le numéro doit commencer par 0 ou +261")
-    
+
+def check_phone(phone: str):
+    """
+    >>> AJOUT : version "tuple" de la validation, dédiée à un usage manuel
+    dans les vues (ex: update()). Ne remplace PAS validate_phone (le validator
+    Django), qui lui doit continuer à `raise`.
+    Retourne (is_valid: bool, error_message: str | None)
+    """
+    try:
+        validate_phone(phone)
+        return True, None
+    except ValidationError as e:
+        return False, e.message
+
 class User(models.Model):
     ROLE_CHOICES = [
         ('admin', 'Administrateur'),

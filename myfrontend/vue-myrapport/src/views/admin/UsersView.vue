@@ -148,7 +148,7 @@ const phoneError = computed(() => {
   // Format international : +261 + 9 chiffres
   if (raw.startsWith('+261')) {
     const digits = raw.slice(4)
-    if (!/^\d*$/.test(digits)) return 'Uniquement des chiffres après +261'
+    if (!/^\d*$/.test(digits)) return 
     const diff = 9 - digits.length
     if (diff > 0) return `Il manque ${diff} chiffre(s) après +261 (9 attendus)`
     if (diff < 0) return `Il y a ${-diff} chiffre(s) en trop après +261 (9 attendus)`

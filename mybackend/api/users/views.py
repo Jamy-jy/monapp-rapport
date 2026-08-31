@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import User, validate_phone
+from .models import User, validate_phone, check_phone
 from .serializers import UserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -28,6 +28,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if password and len(password) < 6:
             errors['password'] = "Le mot de passe doit contenir au moins 6 caractères"
 
+        #Phone
         is_valid, phone_err = validate_phone(phone)
         if phone and not is_valid:
             errors['phone'] = phone_err
@@ -85,7 +86,7 @@ class UserViewSet(viewsets.ModelViewSet):
             errors['email'] = "Cet email est déjà utilisé"
 
         # Phone
-        is_valid, phone_err = validate_phone(phone)
+        is_valid, phone_err = check_phone(phone)   
         if phone and not is_valid:
             errors['phone'] = phone_err
 
