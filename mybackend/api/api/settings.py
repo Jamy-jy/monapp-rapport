@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from corsheaders.defaults import default_headers
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,8 +146,9 @@ EMAIL_HOST_USER = 'jeyj.james@gmail.com'
 EMAIL_HOST_PASSWORD = 'nfxo tihl imur fnsm'
 DEFAULT_FROM_EMAIL = 'test@gmail.com'
 
-MESSAGEBIRD_API_KEY = 'zJYfT1jl7RbuPw2ZkCGBQT2b1'
-MESSAGEBIRD_ORIGINATOR = 'MadaOzi' 
+
+MESSAGEBIRD_API_KEY = os.environ.get('MESSAGEBIRD_API_KEY', '')
+MESSAGEBIRD_ORIGINATOR = 'Madaozi' 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

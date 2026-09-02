@@ -374,16 +374,15 @@ def send_sms(request):
                 headers={
                     'Authorization': f"AccessKey {settings.MESSAGEBIRD_API_KEY}",
                     'Content-Type': 'application/x-www-form-urlencoded',  # form-encoded
-                    'Accept': 'application/json',
-                },
+                    'Accept': 'application/json',                },
                 data={
-                    'originator': settings.MESSAGEBIRD_ORIGINATOR,
-                    'recipients': phone,
-                    'body': content,
+                    'originator': 'Madaozi',
+                    'recipients': '+261349189391',
+                    'body': 'This is a test message',
                 },
                 proxies={'http': None, 'https': None},
 
-                timeout=10
+                timeout=30
             )
             print("STATUS:", response.status_code)
             print("RESPONSE:", response.text)
@@ -410,6 +409,10 @@ def send_sms(request):
                     'error': response.json().get('errors', [{}])[0].get('description', 'Erreur inconnue')
                 })
 
+            print("PHONE:", phone)
+            print("API KEY:", settings.MESSAGEBIRD_API_KEY)
+            print("API KEY REPR:", repr(settings.MESSAGEBIRD_API_KEY))
+            
         except requests.exceptions.Timeout:
             errors.append({'tech': f"{tech.prenom} {tech.nom}", 'error': 'Délai dépassé'})
         except Exception as e:
