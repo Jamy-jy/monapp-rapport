@@ -10,7 +10,7 @@ class JWTAuthMiddleware:
 
     def __call__(self, request):
         # Routes publiques — pas besoin de token
-        public_routes = ['/api/login', '/admin/', '/upload', '/media']
+        public_routes = ['/login', '/admin/', '/upload', '/media']
         if any(request.path.startswith(route) for route in public_routes):
             return self.get_response(request)
 

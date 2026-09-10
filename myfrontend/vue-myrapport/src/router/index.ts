@@ -30,7 +30,7 @@ import ModelView from '@/views/tech/ModelView.vue'
 import SystemeView from '@/views/admin/SystemeView.vue'
 import MaterielView from '@/views/admin/MaterielView.vue'
 import ReseauView from '@/views/admin/ReseauView.vue'
-import IncidentechlView from '@/views/tech/IncidentechlView.vue'
+import AjoutIncidentechlView from '@/views/tech/AjoutIncidentechlView.vue'
 import HistoriqueIncidentView from '@/views/admin/HistoriqueIncidentView.vue'
 import MessagingAdminView from '@/views/admin/MessagingAdminView.vue'
 import MessagingTechView  from '@/views/tech/MessagingTechView.vue'
@@ -39,6 +39,7 @@ import InventaireView from '@/views/admin/InventaireView.vue'
 import InventaireTechView from '@/views/tech/InventaireTechView.vue'
 import HistoriqueinventaireView from '@/views/admin/HistoriqueinventaireView.vue'
 import HistoriqueStockBureauView from '@/views/admin/HistoriqueStockBureauView.vue'
+import ListeIncidentView from '@/views/tech/ListeIncidentView.vue'
 /* import { title } from 'process' */
 
 const router = createRouter({
@@ -309,11 +310,19 @@ const router = createRouter({
           }
         },  
         {
-          path: 'Incidents',
-          name: 'Incidents',
-          component: IncidentechlView,
+          path: 'AjoutIncidentsSurvenu',
+          name: 'Incidents-survenu',
+          component: AjoutIncidentechlView,
           meta: {
-            title: 'Incidents'
+            title: 'Incidents-survenu'
+          }
+        },
+        {
+          path: 'ListSolution',
+          name: 'Liste-incidents',
+          component: ListeIncidentView,
+          meta: {
+            title: 'Liste-Incidents'
           }
         },
         {

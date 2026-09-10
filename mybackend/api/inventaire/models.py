@@ -33,10 +33,22 @@ class GroupInventaire(models.Model):
         db_table = "Groupe_inventaire"
 
 class ComposantGroup(models.Model):
+    user = models.ForeignKey(
+            'users.User',
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=True,
+        )
     group = models.ForeignKey('GroupInventaire', on_delete=models.CASCADE)
     nom_materiel = models.CharField(max_length=100)
+    model_materiel = models.CharField(null=True, max_length=100)
     marque_materiel = models.CharField(max_length=100)
-    numero_serie = models.CharField(max_length=100)
+    numero_serie = models.CharField(
+         unique=True, 
+         error_messages={
+            'unique': "Cette numéro de série existe déjà.",
+        },
+         max_length=100)
     configuration = models.CharField(max_length=255)
     Etat_materiel = models.BooleanField(null=True)
     composant_created_at = models.DateTimeField(default=timezone.now)

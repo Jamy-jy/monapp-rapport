@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import traceback
 from .models import Systeme, Materiels, Reseau, IncidentSurvenu
 from stock_consommables.models import BoxPaf, BoxOp
 from myrapport.models import RapportJournal
+from .serializers import IncidentSurvenuSerializers
 
 #systeme
 class SystemeListView(APIView):
@@ -410,7 +412,22 @@ class IncidentSurvenuCreateView(APIView):
         except Exception as e:
             traceback.print_exc()
             return Response({"error": str(e)}, status=500)
-        
+
+class IncidentSurvenuListView(APIView):
+    def get(self, request):
+        user = getattr(request, 'current_user', None)
+
+        if user is None:
+            return Response(
+                {'error': "Utilisateur non authentifié."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        Incident = IncidentSurvenu.objects.filter(user=user).order_by('-id')
+        serializer = IncidentSurvenuSerializers(Incident, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class DernierIncidentUserView(APIView):
     def get(self, request):
         try:

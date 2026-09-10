@@ -1,5 +1,6 @@
 import requests          
 import os               
+import messagebird
 from django.conf import settings
 from django.db import models
 from django.shortcuts import render
@@ -338,6 +339,9 @@ def send_sms(request):
     results = []
     errors  = []
 
+    # >>> FIX : client officiel messagebird (legacy), lit la clé passée en argument
+    client = messagebird.Client(settings.MESSAGEBIRD_API_KEY)
+
     for tech in techs:
         # Vérifier que le tech a un numéro
         if not tech.phone:
@@ -360,64 +364,76 @@ def send_sms(request):
         print("PHONE:", phone)
         print("API KEY:", settings.MESSAGEBIRD_API_KEY)
 
+
+
         try:
+            # url = 'https://eu1.platform.bird.com/v1/sms/messages'  # >>> FIX : "v1/sms" au lieu de "sms/v1" (ordre inversé)
+            # print("URL ENVOI:", url)
 
-            url = 'https://rest.messagebird.com/messages'
-            # url = 'https://developers.messagebird.com/api/'
-            print("URL ENVOI:", url)
-            
-            print("HTTP_PROXY:", os.environ.get('HTTP_PROXY', 'None'))
-            print("HTTPS_PROXY:", os.environ.get('HTTPS_PROXY', 'None'))
-            # Appel API MessageBird
-            response = requests.post(
-                url,
-                headers={
-                    'Authorization': f"AccessKey {settings.MESSAGEBIRD_API_KEY}",
-                    'Content-Type': 'application/x-www-form-urlencoded',  # form-encoded
-                    'Accept': 'application/json',                },
-                data={
-                    'originator': 'Madaozi',
-                    'recipients': '+261349189391',
-                    'body': 'This is a test message',
-                },
-                proxies={'http': None, 'https': None},
+            # print("HTTP_PROXY:", os.environ.get('HTTP_PROXY', 'None'))
+            # print("HTTPS_PROXY:", os.environ.get('HTTPS_PROXY', 'None'))
 
-                timeout=30
+            response = client.message_create(
+                originator=settings.MESSAGEBIRD_ORIGINATOR,
+                recipients=[phone],
+                body=content
+                # url,
+                # headers={
+                #     'Authorization': f"Bearer {settings.MESSAGEBIRD_API_KEY}",
+                #     'Content-Type': 'application/json',  # >>> FIX : "application/json" au lieu de form-urlencoded (Bird attend du JSON, cf. plus bas on utilise déjà json=)
+                #     'Accept': 'application/json',
+                # },
+                # json={
+                #     'to': phone,                              # >>> FIX : "to" au lieu de "recipients" (nouveau nom de champ Bird)
+                #     'from': settings.MESSAGEBIRD_ORIGINATOR,   # >>> FIX : "from" au lieu de "originator"
+                #     'text': content,                           # >>> FIX : "text" au lieu de "body"
+                #     'category': 'transactional',               # >>> AJOUT : obligatoire chez Bird (transactional/marketing/authentication/service)
+                # },
+                # proxies={'http': None, 'https': None},
+                # timeout=20
             )
-            print("STATUS:", response.status_code)
-            print("RESPONSE:", response.text)
+            results.append({
+                'tech': f"{tech.prenom} {tech.nom}",
+                'phone': phone,
+                'status': 'envoyé',
+                'message_id': response.id,
+            })
+            # print("STATUS:", response.status_code)
+            # print("RESPONSE:", response.text)
 
-            # Parser la réponse seulement si non vide
-            if response.text:
-                resp_json = response.json()
-            else:
-                resp_json = {}
+            # if response.text:
+            #     resp_json = response.json()
+            # else:
+            #     resp_json = {}
 
-            if response.status_code in [200, 201]:
-                results.append({
-                    'tech': f"{tech.prenom} {tech.nom}",
-                    'phone': phone,
-                    'status': 'envoyé'
-                })
-            else:
-                error_msg = 'Erreur inconnue'
-                if resp_json.get('errors'):
-                    error_msg = resp_json['errors'][0].get('description', error_msg)
-                errors.append({
-                    'tech': f"{tech.prenom} {tech.nom}",
-                    'phone': phone,
-                    'error': response.json().get('errors', [{}])[0].get('description', 'Erreur inconnue')
-                })
+            # if response.status_code == 202:  # >>> FIX : Bird renvoie 202 (accepté, traitement async), pas 200/201
+            #     results.append({
+            #         'tech': f"{tech.prenom} {tech.nom}",
+            #         'phone': phone,
+            #         'status': 'envoyé'
+            #     })
+            # else:
+            #     # >>> FIX : nouvelle structure d'erreur Bird : {"error": {"message": "...", ...}}
+            #     # au lieu de l'ancienne {"errors": [{"description": "..."}]}
+            #     error_msg = resp_json.get('error', {}).get('message', 'Erreur inconnue')
+            #     errors.append({
+            #         'tech': f"{tech.prenom} {tech.nom}",
+            #         'phone': phone,
+            #         'error': error_msg
+            #     })
 
-            print("PHONE:", phone)
-            print("API KEY:", settings.MESSAGEBIRD_API_KEY)
-            print("API KEY REPR:", repr(settings.MESSAGEBIRD_API_KEY))
+            # print("PHONE:", phone)
             
-        except requests.exceptions.Timeout:
-            errors.append({'tech': f"{tech.prenom} {tech.nom}", 'error': 'Délai dépassé'})
-        except Exception as e:
-            errors.append({'tech': f"{tech.prenom} {tech.nom}", 'error': str(e)})
-
+        except messagebird.client.ErrorException as e:  # >>> FIX : "ErrorException" (faute de frappe corrigée dans le nom de l'exception)
+            errors.append({
+                'tech': f"{tech.prenom} {tech.nom}",
+                'phone': phone,
+                'error': str(e.errors[0].description) if e.errors else str(e)
+            })
+        # except requests.exceptions.Timeout:
+        #     errors.append({'tech': f"{tech.prenom} {tech.nom}", 'error': 'Délai dépassé'})
+        # except Exception as e:
+        #     errors.append({'tech': f"{tech.prenom} {tech.nom}", 'error': str(e)})
     return Response({
         'results': results,
         'errors': errors,

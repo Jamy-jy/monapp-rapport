@@ -25,7 +25,7 @@ from stock_consommables.views import boxPafViewSet, boxOpViewSet, stockViewSet, 
 from stock_consommables.export import export_stock_consommable, export_vol
 from myrapport.views import FileUploadView, FileDeleteView, SendEmailView, RapportJournalListView, RapportJournalDetailView, RapportJournalRecuListView, RapportJournalRecuDetailView, RapportJournalDeleteView, TextModelCreateView, TextModelListView, TextModelUpdateView, TextModelDeleteView, AlerteRapportStockView
 from mouvement_vol.views import categorieSejourViewset, ExternalAPIVolView, MouvementVolCreateView, RecapHierView
-from incidents.views import SystemeListView, SystemeCreateView, SystemeUpdateView, SystemeDeleteView, MaterielListView, MaterielCreateView, MaterielUpdateView, MaterielDeleteView, ReseauListView, ReseauCreateView, ReseauUpdateView , ReseauDeleteView, IncidentsListCombinesView, IncidentSurvenuCreateView, DernierIncidentUserView, TechlistIncidentSurvenuView, SearchTechIncidentView
+from incidents.views import SystemeListView, SystemeCreateView, SystemeUpdateView, SystemeDeleteView, MaterielListView, MaterielCreateView, MaterielUpdateView, MaterielDeleteView, ReseauListView, ReseauCreateView, ReseauUpdateView , ReseauDeleteView, IncidentsListCombinesView, IncidentSurvenuCreateView, DernierIncidentUserView, TechlistIncidentSurvenuView, SearchTechIncidentView, IncidentSurvenuListView
 from messaging.views import my_conversations, send_sms, shared_admin_conversation, create_private_conversation, create_group, broadcast_message, MessageListCreate, add_member, remove_member, delete_conversation, delete_message
 from inventaire.views import GroupInventaireViewset, ComposantGroupViewSet,  alertes_materiel, materiels_a_verifier, remplacer_materiel, SiteViewset
 from django.conf import settings
@@ -111,6 +111,7 @@ urlpatterns = [
     path('incidents-survenus/dernier/', DernierIncidentUserView.as_view(), name='dernier-incident-user'),
     path('incidents-survenus/list/', TechlistIncidentSurvenuView.as_view(), name='list-incident-survenu'),
     path('incidents-survenus/serchTechlist/', SearchTechIncidentView.as_view(), name='incidents-survenus-list'),
+    path('incidents-survenus/list-create/', IncidentSurvenuListView.as_view(),name = 'list-nouvel-incident'),
 
     path('messaging/conversations/', my_conversations, name='my-conversations'),
     path('messaging/sms/', send_sms, name='send-sms'),

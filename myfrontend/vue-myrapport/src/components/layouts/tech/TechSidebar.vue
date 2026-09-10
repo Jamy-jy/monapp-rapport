@@ -269,7 +269,18 @@ const menuGroups: MenuGroup[] = [
       {
         icon: HeroIcon,
         name: 'Incidents',
-        path: '/tech/Incidents',
+        subItems: [
+          {
+            name: 'Ajout Incident', 
+            path: '/tech/AjoutIncidentsSurvenu', 
+            pro: false},
+          {
+            name: 'Liste solution', 
+            path: '/tech/ListSolution', 
+            pro: false},
+          
+        ]
+        
       },
       {
         icon: GroupInventaireIcon,
