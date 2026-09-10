@@ -731,6 +731,7 @@ async function confirmSendSms(): Promise<void> {
 
     const result = await store.sendSms(techIds, draft.value.trim())
     smsResult.value = result
+    console.log(result)
 
     // Si tout envoyé -> vider le draft
     if (result.total_erreur === 0) {
