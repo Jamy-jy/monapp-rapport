@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!k3sh7%367#q*9_1%)kxapr%qk&e58hk+=jdwv(f#0+)#udz8_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # Application definition
@@ -136,6 +136,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.204']
 CSRF_TRUSTED_ORIGINS = [
     "http://192.168.1.204",
 ]
+
 CORS_ALLOW_HEADERS = list(default_headers) + ['*',]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
