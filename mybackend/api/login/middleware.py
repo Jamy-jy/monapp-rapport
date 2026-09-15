@@ -1,6 +1,7 @@
 import jwt
 from django.conf import settings
-
+import logging
+logger = logging.getLogger('django')
 
 BLACKLISTED_TOKENS = set()
 
@@ -9,9 +10,10 @@ class JWTAuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+
         # Routes publiques — pas besoin de token
         public_routes = ['/login', '/admin/', '/upload', '/media']
-        if any(request.path.startswith(route) for route in public_routes):
+        if any(request.path_info.startswith(route) for route in public_routes):
             return self.get_response(request)
 
         token = request.headers.get('Authorization', '').replace('Bearer ', '')
