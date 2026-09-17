@@ -147,11 +147,11 @@ class MaterielCreateView(APIView):
                     status=400
                 )
             
-            if not box_paf_id and not box_op_id:
-                errors['box'] = "Le matériel doit appartenir à un box."
+            if not box_paf_id or box_paf_id is None:
+                box_paf_id = None
 
-            if box_paf_id and box_op_id:
-                errors['box'] = "Choisissez soit Box Paf soit Box Op."
+            if not box_op_id or box_op_id is None:
+                box_op_id = None
 
             if errors:
                 return Response(errors, status=400)

@@ -7,7 +7,7 @@
         :icon="ListIcon"
         >
         <form @submit.prevent="handleSave" class="space-y-6">
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <PlaceholderInput
                     v-model="materiel.titre_incident"
                     label="nom incident"
@@ -18,18 +18,7 @@
                     label="nom materiel"
                     placeholder="Entrez le nom materiel"
                 />
-                <SelectInput
-                    label="Box Paf"
-                    placeholder="choisissez le numero du box"
-                    :options="boxPafOptions"
-                    v-model="playload.box_paf"
-                />
-                <SelectInput
-                    label="Box Op"
-                    placeholder="choisissez le numero du box"
-                    :options="boxOptions"
-                    v-model="playload.box_op"
-                />
+
                 <p v-if="serverErrors.nom_materiel" class="text-red-500 text-sm mt-1">
                     {{ serverErrors.nom_materiel }}
                 </p>
@@ -293,8 +282,8 @@
         solution: '',
     })
 
-    const boxPafOptions = ref<Option[]>([])
-    const boxOptions = ref<Option[]>([])
+    // const boxPafOptions = ref<Option[]>([])
+    // const boxOptions = ref<Option[]>([])
 
     // Colonnes tableau
     const columns = [
@@ -304,45 +293,45 @@
     ]
 
     //affichage boxPAf dans select
-    const fetchBoxPaf = async () => {
-        try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/`)
+    // const fetchBoxPaf = async () => {
+    //     try {
+    //         const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxpaf/`)
 
-            boxPafOptions.value = res.data.map((p: any) => ({
-            label: p.numero_boxPaf,  // ce que tu veux afficher
-            value: p.id,               // ce que tu envoies au backend
-            raw : p 
-            }))
+    //         boxPafOptions.value = res.data.map((p: any) => ({
+    //         label: p.numero_boxPaf,  // ce que tu veux afficher
+    //         value: p.id,               // ce que tu envoies au backend
+    //         raw : p 
+    //         }))
 
-        } catch (err) {
-            console.error(err)
-        }
-    }
+    //     } catch (err) {
+    //         console.error(err)
+    //     }
+    // }
 
     //affichage boxop dans select
-    const fetchBoxOp = async () => {
-        try {
-            const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`)
+    // const fetchBoxOp = async () => {
+    //     try {
+    //         const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/boxop/`)
 
-            boxOptions.value = res.data.map((o: any) => ({
-            label: o.numero_boxOp,  // ce que tu veux afficher
-            value: o.id,               // ce que tu envoies au backend
-            raw : o 
-            }))
+    //         boxOptions.value = res.data.map((o: any) => ({
+    //         label: o.numero_boxOp,  // ce que tu veux afficher
+    //         value: o.id,               // ce que tu envoies au backend
+    //         raw : o 
+    //         }))
 
-        } catch (err) {
-            console.error(err)
-        }
-    }
-    onMounted(() => {
-        fetchBoxPaf(),
-        fetchBoxOp()
-    })
+    //     } catch (err) {
+    //         console.error(err)
+    //     }
+    // }
+    // onMounted(() => {
+    //     fetchBoxPaf(),
+    //     fetchBoxOp()
+    // })
 
-    const playload = reactive({
-        box_paf: null as number | null,
-        box_op: null as number | null,
-    })
+    // const playload = reactive({
+    //     box_paf: null as number | null,
+    //     box_op: null as number | null,
+    // })
 
     const handleSave = () => {
         Object.keys(serverErrors).forEach(k => delete serverErrors[k])
@@ -396,13 +385,13 @@
             formData.append('titre_incident', materiel.titre_incident)
             formData.append('nom_materiel', materiel.nom_materiel)
 
-            if (playload.box_paf !== null) {
-                formData.append('box_paf', playload.box_paf.toString())
-            }
+            // if (playload.box_paf !== null) {
+            //     formData.append('box_paf', playload.box_paf.toString())
+            // }
 
-            if (playload.box_op !== null) {
-                formData.append('box_op', playload.box_op.toString())
-            }
+            // if (playload.box_op !== null) {
+            //     formData.append('box_op', playload.box_op.toString())
+            // }
 
             if (avecSolution) {
                 formData.append('solution', materiel.solution)
@@ -424,8 +413,8 @@
             showSolutionCreateModal.value = false
             materiel.titre_incident= ''
             materiel.solution = ''
-            playload.box_paf = null
-            playload.box_op = null
+            // playload.box_paf = null
+            // playload.box_op = null
 
             alert.showAlertNotif(
                 "Enregistrement effectué avec succès",

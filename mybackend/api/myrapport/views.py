@@ -95,8 +95,9 @@ class SendEmailView(APIView):
         saved_file = None
             
         for f in files:
+            f.seek(0) 
             content = f.read()
-            email.attach(f.name, f.read(), f.content_type)
+            email.attach(f.name, content, f.content_type)
             if saved_file is None:
                 saved_file = f  # garder référence du premier fichier
 

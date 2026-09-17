@@ -12,7 +12,7 @@ def validate_phone(phone: str):
     Retourne (is_valid, error_message)
     """
     if not phone:
-        return 
+        return True, None
 
     #supprime les espace et compter les chiffres
     raw = phone.replace(' ', '').replace('-', '')
@@ -20,26 +20,26 @@ def validate_phone(phone: str):
     if raw.startswith('+261'):
         digits = raw[4:]
         if not digits.isdigit():
-            raise ValidationError("Le numéro doit contenir uniquement des chiffres après +261")
+            return False, "Le numéro doit contenir uniquement des chiffres après +261"
         diff = 9 - len(digits)
         if diff > 0:
-            raise ValidationError(f"Il manque {diff} chiffre(s) après +261 (9 attendus)")
+            return False, f"Il manque {diff} chiffre(s) après +261 (9 attendus)"
         if diff < 0:
-            raise ValidationError(f"Il y a {-diff} chiffre(s) en trop après +261 (9 attendus)")
-        return 
+            return False, f"Il y a {-diff} chiffre(s) en trop après +261 (9 attendus)"
+        return True, None
 
     if raw.startswith('0'):
         if not raw.isdigit():
-            raise ValidationError("Le numéro doit contenir uniquement des chiffres")
+            return False, "Le numéro doit contenir uniquement des chiffres"
         digits = raw[1:]
         diff = 9 - len(digits)
         if diff > 0:
-            raise ValidationError(f"Il manque {diff} chiffre(s) (9 attendus après le 0)")
+            return False, f"Il manque {diff} chiffre(s) (9 attendus après le 0)"
         if diff < 0:
             raise ValidationError(f"Il y a {-diff} chiffre(s) en trop (9 attendus après le 0)")
-        return 
+        return True, None
 
-    raise ValidationError("Le numéro doit commencer par 0 ou +261")
+    return False, "Le numéro doit commencer par 0 ou +261"
 
 def check_phone(phone: str):
     """

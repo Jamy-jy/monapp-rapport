@@ -29,9 +29,11 @@ class UserViewSet(viewsets.ModelViewSet):
             errors['password'] = "Le mot de passe doit contenir au moins 6 caractères"
 
         #Phone
-        is_valid, phone_err = validate_phone(phone)
-        if phone and not is_valid:
-            errors['phone'] = phone_err
+        is_valid, phone_err = (True, None)
+        if phone:
+            is_valid, phone_err = validate_phone(phone)
+            if not is_valid:
+                errors['phone'] = phone_err
             
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)

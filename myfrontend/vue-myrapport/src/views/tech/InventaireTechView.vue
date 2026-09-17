@@ -183,9 +183,12 @@
     import ListAction from '@/components/table/listAction.vue';
     import PlaceholderInput from '@/components/FormElement/PlaceholderInput.vue';
     import API_CONFIG from '@/config/api';
+    import { useAlertNotifStore } from '@/stores/AlertNotif';
 
     const currentPageTitle = ref('Inventaire')
     const Group = ref<any[]>([])
+
+    const alert = useAlertNotifStore()
 
     const columnsGroup = [
       { label: 'Groupe', field: 'nom_group', width: '15%'},
@@ -320,6 +323,12 @@
         )
 
         console.log('Composant ajouté :', response.data)
+        
+        alert.showAlertNotif(
+            "Enregistrement effectué avec succès",
+            "success"
+          )
+
 
         showModalAddComposantGroup.value = false
         resetComposantGroupForm()

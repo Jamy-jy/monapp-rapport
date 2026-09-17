@@ -1,7 +1,5 @@
 import jwt
 from django.conf import settings
-import logging
-logger = logging.getLogger('django')
 
 BLACKLISTED_TOKENS = set()
 

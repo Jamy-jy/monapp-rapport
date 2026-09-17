@@ -137,6 +137,16 @@
           </div>
           <div>
             <PlaceholderInput
+              v-model="composantGroup.model_materiel"
+              label="Modèle materiel"
+              placeholder="Entrez modèle materiel"
+            />
+            <p v-if="composantGroupErrors.model_materiel" class="text-red-500 text-sm mt-1">
+              {{ composantGroupErrors.model_materiel }}
+            </p>
+          </div>
+          <div>
+            <PlaceholderInput
               v-model="composantGroup.marque_materiel"
               label="Marque materiel"
               placeholder="Entrez marque materiel"
@@ -336,6 +346,7 @@ onMounted(() => {
 
     const composantGroupErrors = reactive<Record<string, string>>({
       nom_materiel: '',
+      model_materiel: '',
       marque_materiel: '',
       numero_serie: '',
       configuration: '',
@@ -504,6 +515,7 @@ onMounted(() => {
 
     const composantGroup = reactive({
       nom_materiel: '',
+      model_materiel: '',
       marque_materiel: '',
       numero_serie: '',
       configuration: '',
@@ -518,11 +530,13 @@ onMounted(() => {
 
     const resetComposantGroupForm = () => {
       composantGroup.nom_materiel = ''
+      composantGroup.model_materiel = ''
       composantGroup.marque_materiel = ''
       composantGroup.numero_serie = ''
       composantGroup.configuration = ''
 
       composantGroupErrors.nom_materiel = ''
+      composantGroupErrors.model_materiel = ''
       composantGroupErrors.marque_materiel = ''
       composantGroupErrors.numero_serie = ''
       composantGroupErrors.configuration = ''
@@ -533,6 +547,7 @@ onMounted(() => {
       let isValid = true
 
       composantGroupErrors.nom_materiel = ''
+      composantGroupErrors.model_materiel =''
       composantGroupErrors.marque_materiel = ''
       composantGroupErrors.numero_serie = ''
       composantGroupErrors.configuration = ''
@@ -540,6 +555,9 @@ onMounted(() => {
       if (!composantGroup.nom_materiel.trim()) {
         composantGroupErrors.nom_materiel = 'Le nom du matériel est requis.'
         isValid = false
+      }
+      if (!composantGroup.model_materiel.trim()) {
+        composantGroupErrors.model_materiel = 'Le modele de champ est requis'
       }
       if (!composantGroup.marque_materiel.trim()) {
         composantGroupErrors.marque_materiel = 'La marque est requise.'
@@ -566,6 +584,7 @@ onMounted(() => {
         const payload = {
           group: selectedGroupId.value,
           nom_materiel: composantGroup.nom_materiel,
+          model_materiel: composantGroup.model_materiel,
           marque_materiel: composantGroup.marque_materiel,
           numero_serie: composantGroup.numero_serie,
           configuration: composantGroup.configuration,
@@ -579,6 +598,10 @@ onMounted(() => {
         )
 
         console.log('Composant ajouté :', response.data)
+        alert.showAlertNotif(
+            "Enregistrement effectué avec succès",
+            "success"
+          )
 
         showModalAddComposantGroup.value = false
         resetComposantGroupForm()
@@ -613,6 +636,7 @@ onMounted(() => {
     // --- Colonnes du tableau de composants ---
     const columnsComposant = [
       { label: 'Nom matériel', field: 'nom_materiel', width: '20%' },
+      { label: 'Modèle matériel', field: 'model_materiel', width: '20%' },
       { label: 'Marque matériel', field: 'marque_materiel', width: '20%' },
       { label: 'Numéro série', field: 'numero_serie', width: '15%' },
       { label: 'Configuration', field: 'configuration', width: '30%' },

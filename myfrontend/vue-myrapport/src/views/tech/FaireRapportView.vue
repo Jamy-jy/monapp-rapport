@@ -69,7 +69,10 @@
       </div>
     </div>
     <div class="my-2 flex justify-end">
-      <SendBtn @click="sendEmail"/>
+      <SendBtn 
+        @click="sendEmail"
+        :loading="loading"
+      />
     </div>
 
 
@@ -371,8 +374,9 @@ const fetchAlertesRapport = async () => {
   }
 }
 
-
+const loading = ref(false)
 const sendEmail = async () => {
+  loading.value = true
   try {
     const formData = new FormData()
 
@@ -405,11 +409,11 @@ const sendEmail = async () => {
         const response = await fetch(downloadUrl)
         const blob = await response.blob()
         const realFile = new File([blob], file.name, {type: file.type})
-        formData.append('file', realFile)
-      } else {
-        //fichier pas encore uploadé par Dropzone
-        formData.append('files', file)
-      }
+        //formData.append('file', realFile)
+      } //else {
+      //   //fichier pas encore uploadé par Dropzone
+      //   formData.append('files', file)
+      // }
     }
     const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/send-email/`,formData,
       {
@@ -434,6 +438,8 @@ const sendEmail = async () => {
             "Erreur! Email non envoyé",
             "error"
           )
+  } finally {
+    loading.value = false
   }
   console.log(files.value)
 }

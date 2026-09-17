@@ -76,7 +76,7 @@ onMounted(() => {
     uploadMultiple: false,
     thumbnailWidth: 150,
     maxFilesize: 200,
-    acceptedFiles: `image/jpeg,image/png,image/gif,image/webp,image/svg+xml,.doc,.docx,.xls,.xlsx,.txt`,
+    acceptedFiles: `image/jpeg,image/png,image/gif,image/webp,image/svg+xml,.pdf,.zip,.doc,.docx,.xls,.xlsx,.txt`,
     headers: { 'My-Awesome-Header': 'header value' },
     dictDefaultMessage: '',
     init: function () {
@@ -130,6 +130,9 @@ onMounted(() => {
       this.on('removedfile', async (file:any) => {
         console.log("Removing file...", file)
 
+        files.value = files.value.filter((f: any) => f !== file)
+        emit('update:files', files.value)
+        
         if (!file.downloadUrl) return
 
         try {
