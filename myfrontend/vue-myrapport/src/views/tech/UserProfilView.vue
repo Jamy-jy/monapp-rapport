@@ -14,7 +14,6 @@
 import { ref } from 'vue'
 import ProfileCard from '@/components/profile/ProfileCard.vue';
 import PersonalInfoCard from '@/components/profile/PersonalInfoCard.vue';
-import AdressCard from '@/components/profile/AdressCard.vue';
 import PageBreadcrumbTech from '@/components/common/PageBreadcrumbTech.vue';
 
 const currentPageTitle = ref('Profile')

@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
     
     async login(email: string, password: string) {
       const res = await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/login/`, { email, password })
-      
+
       this.token = res.data.token
       this.user = res.data.user
 
@@ -46,6 +46,7 @@ export const useAuthStore = defineStore('auth', {
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
 
       return res.data.user.role  // retourne le role pour la redirection
+      
     },
 
     async logout() {

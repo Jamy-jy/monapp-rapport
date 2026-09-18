@@ -202,6 +202,7 @@ const handleSubmit = async () => {
     } else {
       router.push('tech/')
     }
+    console.log("USER CONNECTÉ :", authStore.user)
   } catch (error: any)  {
     errorMsg.value = error.response?.data?.error || 'Erreur de connexion'
   }

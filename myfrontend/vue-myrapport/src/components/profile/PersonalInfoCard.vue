@@ -206,11 +206,7 @@
               >
                 Fermer
               </button>
-              <button
-                type="submit"
-              >
                 <UpdateBtn/>
-              </button>
             </div>
           </form>
         </div>
@@ -271,6 +267,7 @@ const saveProfile = async () => {
   // Validation phone
   if (formData.phone) {
     const raw = formData.phone.replace(/\s/g, '').replace(/-/g, '')
+    let phoneOk = false
 
     // Format international : +261 + 9 chiffres
     if (raw.startsWith('+261')){
@@ -280,37 +277,26 @@ const saveProfile = async () => {
         return
       }
       const diff = 9 - digits.length
-      if (diff > 0) {
-        errors.phone = `Il manque ${diff} chiffre(s) après +261 (9 attendus)`
-        return
-      }
-      if (diff < 0){
-        errors.phone = `Il y a ${-diff} chiffre(s) en trop après +261 (9 attendus)`
-        return
-      }
-      return ''
+      if (diff > 0) { errors.phone = `Il manque ${diff} chiffre(s) après +261 (9 attendus)`; return }
+      if (diff < 0){ errors.phone = `Il y a ${-diff} chiffre(s) en trop après +261 (9 attendus)`; return }
+      phoneOk = true
     }
-
     // Format local : 0 + 9 chiffres
-    if (raw.startsWith('0')){
+    else if (raw.startsWith('0')){
       if (!/^\d+$/.test(raw)) {
         errors.phone = 'Le numéro doit contenir uniquement des chiffres'
         return
       }
       const digits = raw.slice(1)
       const diff = 9 - digits.length
-      if (diff > 0) {
-        errors.phone = `Il manque ${diff} chiffre(s) (9 attendus après le 0)`
-        return
-      }
-      if (diff < 0) {
-        errors.phone = `Il y a ${-diff} chiffre(s) en trop (9 attendus après le 0)`
-        return 
-      } 
-      return ''
+      if (diff > 0) { errors.phone = `Il manque ${diff} chiffre(s) (9 attendus après le 0)`; return }
+      if (diff < 0) { errors.phone = `Il y a ${-diff} chiffre(s) en trop (9 attendus après le 0)`; return } 
+      phoneOk = true
     }
-
-    return 'Le numéro doit commencer par 0 ou +261'
+    if (!phoneOk) {
+      errors.phone = 'Le numéro doit commencer par 0 ou +261'
+      return 
+    }
   }
 
   // Construire le payload — exclure confirmPassword et password vide
@@ -326,20 +312,16 @@ const saveProfile = async () => {
 
 
   try {
-    const res = await axios.patch(
-      `${API_CONFIG.LOCAL.BASE_URL}/users/${authStore.user?.id}/`,
+    const userId = authStore.user?.id
+    const res = await axios.patch(`${API_CONFIG.LOCAL.BASE_URL}/users/${userId}/`,
       payload
     )
 
     //  Mettre à jour le store avec les nouvelles données
-    authStore.updateUser({
-      nom: formData.nom,
-      prenom: formData.prenom,
-      email: formData.email,
-      phone: formData.phone,
-    })
+    authStore.updateUser(res.data.data)
 
     successMsg.value = 'Profil mis à jour avec succès ✓'
+    
     setTimeout(() => {
       isProfileInfoModal.value = false
       successMsg.value = ''

@@ -1,7 +1,7 @@
 <template>
     <button
         class="h-11 px-5 flex items-center gap-2 justify-center rounded-lg bg-brand-500 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
-        @click="update"
+        type="submit"
     >
         <svg  
             width="24"  height="24"  viewBox="0 0 24 24"
@@ -15,10 +15,3 @@
         Modifier
     </button>
 </template>
-<script setup lang="ts">
-import { ref } from 'vue'
-
-function update() {
-  console.log('update clicked')
-}
-</script>

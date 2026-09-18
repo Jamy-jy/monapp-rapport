@@ -53,6 +53,7 @@ class LoginView(APIView):
             'email': user.email,
             'nom': user.nom,
             'prenom': user.prenom,
+            'phone': user.phone,
             'role': user.role,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8),
             'iat': datetime.datetime.utcnow(),
@@ -66,6 +67,7 @@ class LoginView(APIView):
                 "id": user.id,
                 "nom": user.nom,
                 "prenom": user.prenom,
+                "phone": user.phone,
                 "email": user.email,
                 "role": user.role,
             }
