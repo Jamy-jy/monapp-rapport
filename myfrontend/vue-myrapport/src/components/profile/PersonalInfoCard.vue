@@ -222,11 +222,13 @@ import Modal from './Modal.vue'
 import UpdateBtn from '../buttons/UpdateBtn.vue'
 import { useAuthStore } from '@/stores/auth'
 import API_CONFIG from '@/config/api'
+import { useAlertNotifStore } from '@/stores/AlertNotif.ts'
 
 
 const isProfileInfoModal = ref(false)
 const authStore = useAuthStore()
 const successMsg = ref('')
+const alert = useAlertNotifStore()
 
 const formData = reactive({
   nom: '',
@@ -320,6 +322,10 @@ const saveProfile = async () => {
     //  Mettre à jour le store avec les nouvelles données
     authStore.updateUser(res.data.data)
 
+    alert.showAlertNotif(
+      "Profil mise à jour avec succès",
+      "success",
+    )
     successMsg.value = 'Profil mis à jour avec succès ✓'
     
     setTimeout(() => {
