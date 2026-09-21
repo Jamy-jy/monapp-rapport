@@ -131,11 +131,11 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://192.168.1.204", "http://102.16.9.119" ]
 CORS_ALLOW_CREDENTIALS = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.204', '102.16.9.119']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.204','102.16.9.119']
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://'102.16.9.119'",
-    '102.16.9.119'
+    "http://192.168.1.204",
+    "http://102.16.9.119",
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + ['*',]

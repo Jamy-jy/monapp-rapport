@@ -8,8 +8,7 @@ const API_CONFIG = {
     }
   },
   LOCAL: {
-    // BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://192.168.1.204/api'
-    BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://102.16.9.119/api'
+    BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://192.168.1.204/api' || 'http://102.16.9.119'
   }
 }
 
