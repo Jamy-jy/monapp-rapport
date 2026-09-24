@@ -80,6 +80,7 @@ const fetchBobines = async () => {
     
     
     vinette.value = res.data
+    .filter((box: any) => !!box.box_paf?.numero_boxPaf?.trim())
     .map((box: any) => ({
       boxPaf: box.box_paf?.numero_boxPaf || '',   // affichage depuis serializer
       numero_bobine: box.id,

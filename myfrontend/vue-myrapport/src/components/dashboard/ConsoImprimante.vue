@@ -58,7 +58,8 @@
               <!-- Éditable — select -->
               <select
                 v-if="editable && localProducts[index]"
-                v-model="localProducts[index].niveaux[box.id]"
+                :value="localProducts[index].niveaux[box.id]"
+                @change="updateNiveau(index, box.id, ($event.target as HTMLSelectElement).value)"
                 class="text-sm border border-gray-300 rounded-lg px-2 py-1 dark:border-gray-700 dark:bg-gray-900 dark:text-white outline-none focus:border-brand-400"
               >
                 <option v-for="n in niveaux" :key="n.value" :value="n.value">{{ n.label }}</option>
@@ -77,7 +78,8 @@
               <!--  Éditable — input number -->
               <input
                 v-if="editable && localProducts[index]"
-                v-model.number="localProducts[index].nbr_bouteil"
+                :value="localProducts[index].nbr_bouteil"
+                @change="updateReserve(index, ($event.target as HTMLInputElement).value)"
                 type="number"
                 min="0"
                 class="w-16 px-2 py-1 text-sm border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-900 dark:text-white text-center focus:border-brand-400 outline-none"
@@ -140,9 +142,27 @@ watch(() => props.products, (val) => {
   localProducts.value = JSON.parse(JSON.stringify(val))
 }, { deep: true })
 
-watch(localProducts, (val) => {
-  emit('update:products', val)
-}, { deep: true })
+//encien code provoque une boucle infini
+// watch(localProducts, (val) => {
+//   emit('update:products', val)
+// }, { deep: true })
+
+// Pas de 2e watch ! On émet uniquement à la demande :
+function updateNiveau(productIndex: number, boxId: number, value: string) {
+  const product = localProducts.value[productIndex]
+  if (!product) return   
+  
+  product.niveaux[boxId] = value
+  emit('update:products', localProducts.value)
+}
+
+function updateReserve(productIndex: number, value: string) {
+  const product = localProducts.value[productIndex]
+  if (!product) return
+
+  product.nbr_bouteil = value
+  emit('update:products', localProducts.value)
+}
 
 const niveaux = [
   { label: '100%', value: '100%' },
@@ -178,4 +198,5 @@ const couleurHex = (nom: string): string => {
   }
   return map[nom] || '#6b7280'
 }
+
 </script>
