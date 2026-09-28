@@ -77,7 +77,9 @@ const cancelEdit = () => {
 
 const saveModel = async () => {
   try {
+    const token = sessionStorage.getItem('token')
     await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/text-model/create/`, {
+      headers: { Authorization: `Bearer ${token}` },
       text: modelValue.value,
     })
     alert.showAlertNotif(
