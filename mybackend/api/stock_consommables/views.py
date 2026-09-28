@@ -280,6 +280,7 @@ class imprimanteViewSet(viewsets.ModelViewSet):
 class NiveauEncreListView(APIView):
     def get(self, request):
         try:
+            CouleurEncre.objects.ensure_defaults()
             couleurs = CouleurEncre.objects.all()
             boxops = BoxOp.objects.all().order_by('numero_boxOp')
             

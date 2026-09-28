@@ -77,7 +77,7 @@ const cancelEdit = () => {
 
 const saveModel = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/text-model/create/`, {
+    await axios.post(`${API_CONFIG.LOCAL.BASE_URL}/text-model/create/`, {
       text: modelValue.value,
     })
     alert.showAlertNotif(
@@ -136,7 +136,7 @@ onMounted(() => {
 const updateModel = async () => {
   try {
     await axios.put(
-      `http://127.0.0.1:8000/text-model/update/${selectedModele.value}/`,
+      `${API_CONFIG.LOCAL.BASE_URL}/text-model/update/${selectedModele.value}/`,
       {
         text: modelValue.value,
       }
@@ -163,7 +163,7 @@ const updateModel = async () => {
 const deleteModel = async () => {
   try {
     await axios.delete(
-      `http://127.0.0.1:8000/text-model/delete/${selectedModele.value}/`
+      `${API_CONFIG.LOCAL.BASE_URL}/text-model/delete/${selectedModele.value}/`
     )
 
     alert.showAlertNotif(

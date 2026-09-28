@@ -143,10 +143,29 @@ class RapportImpression(models.Model):
     class Meta:
         db_table = "RapportImpression"
 
+
+
 #encre pour imprimante
+COULEURS_PAR_DEFAUT = ["Noir", "Bleu", "Rouge", "Jaune"]
+
+class CouleurEncreManager(models.Manager):
+    def ensure_defaults(self):
+        """Recrée les couleurs manquantes (reserve=0). Ne touche pas aux existantes."""
+        existantes = set(
+            self.filter(nom__in=COULEURS_PAR_DEFAUT).values_list("nom", flat=True)
+        )
+        manquantes = [n for n in COULEURS_PAR_DEFAUT if n not in existantes]
+        if manquantes:
+            self.bulk_create(
+                [self.model(nom=n, reserve=0) for n in manquantes],
+                ignore_conflicts=True,  # sûr même si deux requêtes arrivent en même temps
+            )
+
 class CouleurEncre(models.Model):
-    nom = models.CharField(max_length=50)        # Noir, Bleu, Rouge, Jaune
+    nom = models.CharField(max_length=50, unique=True)        # Noir, Bleu, Rouge, Jaune
     reserve = models.IntegerField(default=0)     # nombre de bouteilles en stock
+    objects = CouleurEncreManager()
+
 
     def __str__(self):
         return self.nom
