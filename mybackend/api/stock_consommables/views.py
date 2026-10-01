@@ -255,6 +255,16 @@ class bobineViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @action(detail=False, url_path='last_bobineby_boxpaf/(?P<box_paf_id>[^/.]+)')
+    def last_bobineby_boxpaf(self, request, box_paf_id=None):
+        bobine = (
+            Bobine.objects
+            .filter(box_paf_id=box_paf_id)
+            .order_by('-id')
+            .first()
+        )
+        return Response({'numero_bobine': bobine.numero_bobine if bobine else None})
+
 class boxOpViewSet(viewsets.ModelViewSet):
     queryset = BoxOp.objects.all()
     serializer_class = boxOpSerializer

@@ -81,36 +81,84 @@
     </div>
     <div v-if="showBobineModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div class="relative bg-white dark:bg-gray-900 p-6 rounded-xl w-[800px] shadow-2xl border dark:border-gray-dark">
+        <form @submit.prevent="openConfirmModal">
+          <button
+            @click="closeModal"
+            class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl"
+          >
+            &times;
+          </button>
+          <h2 class="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
+            Ajout de {{ nbBobinesToCreate }} bobine(s)
+          </h2>
+  
+          <div v-for="(b, i) in bobines" :key="i" class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+            <PlaceholderInput v-model="b.numero_bobine" placeholder="Numéro bobine" label="Numéro bobine" />
+            <PlaceholderInput v-model="b.debut_serie" placeholder="Début série" label="N° debut Vignette"/>
+            <PlaceholderInput v-model="b.fin_serie" placeholder="Fin série" label="N° fin vignette"/>
+            <SelectInput 
+              label="Box Paf"
+              placeholder="choississez le Box Paf" 
+              :options="boxPafOptions" 
+              v-model="b.box_paf" 
+            />
+          </div>
+          <div  class="flex justify-end mt-2 ">
+            <SaveBtn type="submit"/>
+          </div>
+        </form>
+      </div>
+    </div>
 
-        <button
-          @click="closeModal"
-          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl"
-        >
-          &times;
-        </button>
-        <h2 class="text-base font-medium text-gray-800 dark:text-white/90 mb-4">
-          Ajout de {{ nbBobinesToCreate }} bobine(s)
-        </h2>
+    <!-- Modal de confirmation -->
+    <div
+      v-if="showConfirmModal"
+      class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50"
+      @click.self="cancelConfirm"
+    >
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 max-w-md w-full mx-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+          ⚠️ Attention, cette action est irréversible !
+        </h3>
 
-        <div v-for="(b, i) in bobines" :key="i" class="grid grid-cols-1 gap-4 sm:grid-cols-4">
-          <PlaceholderInput v-model="b.numero_bobine" placeholder="Numéro bobine" label="Numéro bobine" />
-          <PlaceholderInput v-model="b.debut_serie" placeholder="Début série" label="N° debut Vignette"/>
-          <PlaceholderInput v-model="b.fin_serie" placeholder="Fin série" label="N° fin vignette"/>
-          <SelectInput 
-            label="Box Paf"
-            placeholder="choississez le Box Paf" 
-            :options="boxPafOptions" 
-            v-model="b.box_paf" 
-          />
+        <div class="max-h-60 overflow-y-auto space-y-2 my-4">
+          <p
+            v-for="(b, index) in bobineAConfirmer"
+            :key="index"
+            class="text-sm text-gray-600 dark:text-gray-300"
+          >
+            Vous avez choisi la box numérotée <strong>{{ b.numero_boxPaf }}</strong> :
+            <template v-if="b.bobine_existants">
+              le bobine portant le numéro <strong>{{ b.bobine_existants }}</strong> est-il
+              vraiment épuisé ?
+            </template>
+            <template v-else>
+              aucune bobine n'est encore enregistrée pour cette box.
+            </template>
+          </p>
         </div>
-        <div @click="submitBobines" class="flex justify-end mt-2 ">
-          <SaveBtn />
+
+        <div class="flex justify-end gap-3 mt-4">
+          <button
+            type="button"
+            @click="cancelConfirm"
+            class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            @click="confirmAndSubmit"
+            class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+          >
+            Oui, confirmer
+          </button>
         </div>
       </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch, computed } from 'vue';
 import ComponentCard from '@/components/common/ComponentCard.vue';
 import PageBreadcrumbTech from '@/components/common/PageBreadcrumbTech.vue';
 import ValideBtn from '@/components/buttons/ValideBtn.vue';
@@ -257,6 +305,8 @@ watch(nbBobinesToCreate, (n) => {
 })
 //fetch box paf select option 
 const boxPafOptions = ref<Option[]>([])
+//confirmation de box paf avant d'assigné nouvel bobine
+const showConfirmModal = ref(false)
 
 const fetchBoxPaf = async () => {
   try {
@@ -276,6 +326,64 @@ onMounted(() => {
   fetchConsommable()
   fetchBoxPaf()
 })
+
+// Liste enrichie pour l'affichage du modal (numéro de box lisible au lieu de l'id)
+const bobineAConfirmer = ref<{ numero_boxPaf: string; bobine_existants: string | null }[]>([]) 
+
+// Ouvre le modal au lieu de soumettre directement
+const openConfirmModal = async () => {
+  if (!bobines.value.length) {
+    alert.showAlertNotif(
+      "Ajoutez au moins un bobine avant de valider", 
+      "warning"
+    )
+    return
+  }
+  // Vérifie que chaque bobine a bien un numéro et une box sélectionnée
+  const incomplet = bobines.value.some(b => !b.box_paf)
+  if (incomplet) {
+    alert.showAlertNotif(
+      "Remplissez une box pour chaque ligne", 
+      "warning"
+    )
+    return
+  }
+
+  try {
+    const resultas = await Promise.all(
+      bobines.value.map(async (b) => {
+        const box = boxPafOptions.value.find(opt => String(opt.value) === String(b.box_paf))
+        const res = await axios.get(`${API_CONFIG.LOCAL.BASE_URL}/bobines/last_bobineby_boxpaf/${b.box_paf}/`)
+        return {
+          numero_boxPaf: box?.label ?? 'Box inconnue',
+          bobine_existants: res.data.numero_bobine as string | null
+        }
+      })
+    )
+    bobineAConfirmer.value = resultas
+    showConfirmModal.value = true
+  } catch (err) {
+    console.error(err)
+    alert.showAlertNotif(
+      "Impossible de récupérer le bobine existants pour cette box", 
+      "error"
+    )
+  }
+} 
+
+const cancelConfirm = () => {
+  showConfirmModal.value = false
+}
+
+const confirmAndSubmit = async () => {
+  showConfirmModal.value = false
+
+  console.log('boxOptions:', boxPafOptions.value)
+  console.log('bobine:', bobines.value.map(b => ({ box: b.box_paf, type: typeof b.box_paf })))
+
+  await submitBobines()
+  showBobineModal.value = false
+}
 
 //auto calcule de numéro de serie
 const generateSeries = (numero: number) => {

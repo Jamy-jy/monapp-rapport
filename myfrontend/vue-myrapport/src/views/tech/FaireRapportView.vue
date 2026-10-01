@@ -219,7 +219,7 @@ const exportStock = async (data: {
     const token = sessionStorage.getItem('token')
 
     const response = await fetch(
-      `${API_CONFIG.LOCAL.BASE_URL}/export/vol/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}`,
+      `${API_CONFIG.LOCAL.BASE_URL}/export/stock/?dateDebut=${data.dateDebut}&dateFin=${data.dateFin}`,
       {
         method: 'GET',
         headers: {
