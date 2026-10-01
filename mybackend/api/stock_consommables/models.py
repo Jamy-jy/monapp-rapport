@@ -24,7 +24,7 @@ class Stock_consommable(models.Model):
         db_table = "Stock_consommable"
 
 class BoxPaf(models.Model):
-    numero_boxPaf = models.CharField(max_length=100)
+    numero_boxPaf = models.CharField(max_length=100, unique=True)
 
     def __str__(self) :
         return f"{self.numero_boxPaf}"
@@ -33,7 +33,7 @@ class BoxPaf(models.Model):
         db_table = "BoxPaf"
 
 class BoxOp(models.Model):
-    numero_boxOp = models.CharField(max_length=100)
+    numero_boxOp = models.CharField(max_length=100, unique=True)
 
     def __str__(self) :
         return f"{self.numero_boxOp}"
@@ -46,7 +46,7 @@ class Bobine(models.Model):
         limit_choices_to={'type_consommable': 'Bobine'},
     )
 
-    numero_bobine = models.CharField(max_length=100)
+    numero_bobine = models.CharField(max_length=100, unique=True)
     debut_serie = models.BigIntegerField()
     fin_serie = models.BigIntegerField()
     est_terminee = models.BooleanField(default=False)

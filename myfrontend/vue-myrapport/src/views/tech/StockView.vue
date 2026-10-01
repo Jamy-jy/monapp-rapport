@@ -340,10 +340,20 @@ const openConfirmModal = async () => {
     return
   }
   // Vérifie que chaque bobine a bien un numéro et une box sélectionnée
-  const incomplet = bobines.value.some(b => !b.box_paf)
+  const incomplet = bobines.value.some(b => !b.numero_bobine || !b.box_paf)
   if (incomplet) {
     alert.showAlertNotif(
-      "Remplissez une box pour chaque ligne", 
+      "le numero bobine ou la box Paf n'est pas renseigné sur chaque ligne", 
+      "warning"
+    )
+    return
+  }
+
+  const numeros = bobines.value.map(b => b.numero_bobine.trim())
+  const doublonsLocaux = numeros.filter((n, i) => numeros.indexOf(n) !== i)
+  if (doublonsLocaux.length > 0) {
+    alert.showAlertNotif(
+      `Numéro(s) de bobine en double dans votre saisie : ${[...new Set(doublonsLocaux)].join(', ')}`,
       "warning"
     )
     return
@@ -478,8 +488,40 @@ const submitForm = async () => {
 
   } catch (err) {
     if (axios.isAxiosError(err)) {
-    console.log('STATUS:', err.response?.status)
-    console.log('DATA:', err.response?.data)
+      console.log('STATUS:', err.response?.status)
+      console.log('DATA:', err.response?.data)
+      const status = err.response?.status
+      const data = err.response?.data
+
+      if ( status === 400 && Array.isArray(data)) {
+        const messages: string[] = []
+
+        data.forEach((itemErrors: any, index: number) => {
+          if (itemErrors?.numero_bobine) {
+            const numeroSaisi = bobines.value[index]?.numero_bobine ?? '?'
+            messages.push(
+              `Le numéro de bobine "${numeroSaisi}" existe déjà. Veuillez en choisir un autre.`
+            )
+          }
+        })
+        
+        if (messages.length > 0) {
+          alert.showAlertNotif(
+            messages.join(' | '),
+            "error"
+          )
+        } else {
+          alert.showAlertNotif(
+            "Une erreur s'est produite lors de l'enregistrement", 
+            "error"
+          )
+        }
+      } else {
+        alert.showAlertNotif(
+          "Une erreur s'est produit lors de l'enregistrement",
+          "error"
+        )
+      } 
     } else {
       alert.showAlertNotif(
               "Une erreur s'est produit lors de l'enregistrement",
